@@ -1,6 +1,10 @@
 # capstone-project
 # [Michael C]
 ** create an rpg game **
+-customize avatar(s)
+-level up avatar(s)/increase stats
+-battle a series of opponents to get stronger
+-avatar(s) can be healed outside of battle
 
 # [Luis M]
 ** create cards against humanity card game **
