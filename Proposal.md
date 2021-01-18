@@ -7,7 +7,11 @@
 -avatar(s) can be healed outside of battle
 
 # [Luis M]
-** create cards against humanity card game **
+** create a pokedex **
+-Gives description of the pokemons of all generations(Their ID and Types)
+-Be able to catch pokemons and save them in your pokedex
+-Fight other pokemons to level up
+-Be able to participate on different leagues
 
 
 # [Keith G]
