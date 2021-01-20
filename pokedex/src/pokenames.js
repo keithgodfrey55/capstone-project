@@ -1,5 +1,15 @@
-function getName(){
-    for(let i = 0; i > 151; i++){
-        con('https://pokeapi.co/api/v2/pokemon/${i}/')
+import axios from "axios";
+
+
+class PokemonData{
+    constructor(){
+        this.rawData = '';
     }
+    getPokemonNames(){
+        axios.get("https://pokeapi.co/api/v2/generation/1")
+        .then((response) => {
+        this.rawData = response.data;
+        });
+        }
 }
+export default PokemonData;
