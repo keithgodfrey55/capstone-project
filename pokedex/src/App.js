@@ -7,8 +7,18 @@ class App extends React.Component{
   render(){
     return (
       <div className="App">
-        <Grid container className='container'>
-
+        <Grid container spacing={3} className='container'>
+          
+          <Grid item justify='center' xs={4} sm={4} md={4}>
+          <TextField variant='outlined' placeholder='search by #' />
+          </Grid>
+          <Grid item align='center' xs={4} sm={4} md={4}>
+          <TextField variant='outlined' placeholder='search by name' />
+          </Grid>
+          <Grid item align='center' xs={4} sm={4} md={4}>
+          <TextField variant='outlined' placeholder='search by type' />
+          </Grid>
+         
         </Grid>
       </div>
     );
