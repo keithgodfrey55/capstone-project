@@ -31,10 +31,9 @@ class App extends React.Component {
     // let pokemonNames = response.data;
     // this.setState({rawData: pokemonNames.pokemon_species});
  
-    return (
-      <div className="App">
-        <Grid container spacing={3} className="container">
-          <form> 
+      return (
+	  <form>
+        <Grid container spacing={3}>
           <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
             <TextField fullWidth variant="outlined" placeholder="search by #" />
           </Grid>
@@ -44,9 +43,8 @@ class App extends React.Component {
           <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
             <TextField fullWidth variant="outlined" placeholder="search by type" />
           </Grid>
-          </form>
         </Grid>
-      </div>
+	  </form>
     );
   }
 }
