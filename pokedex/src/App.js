@@ -47,7 +47,6 @@ class App extends React.Component {
         console.log(this.pokeID);
         return this.pokeID;
       });
-      console.log(this.pokeID);
   }
 
   getPokemonNumber(event) {
@@ -69,7 +68,6 @@ class App extends React.Component {
     let regex = new RegExp (`^${event.target.value}`)
     for(let x = 0;x < this.state.pokemonSpecies.length; x++){
       if(regex.exec(this.state.pokemonSpecies[x].name)){
-        // this.setState({pokeNames:[ ...this.state.pokeNames, this.state.pokemonSpecies[x].name]})
         myArray.push(this.state.pokemonSpecies[x].name);
       }
     }
@@ -103,7 +101,6 @@ class App extends React.Component {
             <Autocomplete
               options={this.state.pokeNames}
               getOptionLabel = {(option) => option}
-              // getOptionLabel={(option) => option.name}
               style={{ width: 300 }}
               renderInput={(params) => (
                 <TextField
@@ -111,7 +108,7 @@ class App extends React.Component {
                   fullWidth
                   variant="outlined"
                   placeholder="search by name"
-                  // value={this.state.pokemonInfo.name}
+                  value = {this.state.pokeNames}
                 error={this.state.pokemonInfo.error}
                 onChange={(event) => {
                   this.updateForm("pokemonInfo", event);
@@ -126,7 +123,6 @@ class App extends React.Component {
               <TextField
                 fullWidth
                 variant="outlined"
-                // value={this.state.pokemonInfo.name}
                 placeholder="search by type"
               />
             </Grid>
