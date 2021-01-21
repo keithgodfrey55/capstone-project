@@ -8,12 +8,13 @@ import "./App.css";
 
 class App extends React.Component {
   constructor(props) {
+    const pokeID = '';
     super(props);
     this.state = {
       rawData: "",
       pokemonInfo: {
         name: "",
-        data: "",
+        number: "",
         error: "",
       },
     };
@@ -23,10 +24,14 @@ class App extends React.Component {
     axios
       .get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`)
       .then((response) => {
-        let pokemonNames = response.data;
-        this.setState({ rawData: pokemonNames });
+        let pokemonData = response.data;
+        this.setState({ rawData: pokemonData });
+        this.pokeID = this.state.rawData.id;
+        console.log(this.state.rawData);
+        console.log(this.pokeID);
+        return this.pokeID;
       });
-    console.log(this.state.rawData);
+      console.log(this.pokeID);
   }
 
   updateForm(which, event) {
