@@ -60,7 +60,7 @@ class App extends React.Component {
                 value={this.state.pokemonInfo.name}
                 error={this.state.pokemonInfo.error}
                 onChange={(event) => {
-                  this.updateForm("pokemonInfo.name", event);
+                  this.updateForm("pokemonInfo", event);
                 }}
               />
             </Grid>
@@ -71,7 +71,9 @@ class App extends React.Component {
                 placeholder="search by type"
               />
             </Grid>
-            <Button></Button>
+            <Grid item xs={12} align='center'>
+            <Button type='submit' variant='contained'>Search</Button>
+            </Grid>
           </Grid>
         </form>
     );
