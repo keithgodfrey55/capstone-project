@@ -4,6 +4,8 @@ import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 import pokemonPage from "./pokemonPage";
 import Button from "@material-ui/core/Button";
+import PokemonData from "./pokenames";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import "./App.css";
 
 class App extends React.Component {
@@ -17,8 +19,22 @@ class App extends React.Component {
         number: "",
         error: "",
       },
+      pokemonSpecies:[{ 
+        name:'',
+        url:''
+      }],
+      pokeNames:['']
     };
   }
+  componentDidMount(){
+    axios.get(`https://pokeapi.co/api/v2/generation/1/`)
+    .then((res)=>{
+      console.log(res.data.pokemon_species[100].name)
+      this.setState({pokemonSpecies: res.data.pokemon_species});
+      console.log(this.state.pokemonSpecies[7].name)
+    } ) 
+  }
+
   getPokemonNames(event) {
     event.preventDefault();
     axios
@@ -33,8 +49,25 @@ class App extends React.Component {
       });
       console.log(this.pokeID);
   }
+  // getPokeInfo(name) {
+  //   axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
+  //     .then((response) => {
+  //     let pokemonNames = response.data;
+  //     this.setState()
+  //     console.log(this.state.pokemonInfo);
+  //     });
 
   updateForm(which, event) {
+    let myArray = [];
+    let regex = new RegExp (`^${event.target.value}`)
+    for(let x = 0;x < this.state.pokemonSpecies.length; x++){
+      if(regex.exec(this.state.pokemonSpecies[x].name)){
+        // this.setState({pokeNames:[ ...this.state.pokeNames, this.state.pokemonSpecies[x].name]})
+        myArray.push(this.state.pokemonSpecies[x].name);
+      }
+    }
+    this.setState({pokeNames: myArray})
+    console.log(this.state.pokeNames);
     this.setState({
       [which]: {
         name: event.target.value,
@@ -58,21 +91,33 @@ class App extends React.Component {
               />
             </Grid>
             <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder="search by name"
-                value={this.state.pokemonInfo.name}
+            <Autocomplete
+              options={this.state.pokeNames}
+              getOptionLabel = {(option) => option}
+              // getOptionLabel={(option) => option.name}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                {...params}
+                  fullWidth
+                  variant="outlined"
+                  placeholder="search by name"
+                  // value={this.state.pokemonInfo.name}
                 error={this.state.pokemonInfo.error}
                 onChange={(event) => {
                   this.updateForm("pokemonInfo", event);
                 }}
-              />
+                />
+              )}
+            />
+               
+              
             </Grid>
             <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
               <TextField
                 fullWidth
                 variant="outlined"
+                // value={this.state.pokemonInfo.name}
                 placeholder="search by type"
               />
             </Grid>
@@ -81,7 +126,31 @@ class App extends React.Component {
             </Grid>
           </Grid>
         </form>
-    );
+    // axios.get("https://pokeapi.co/api/v2/generation/1")
+    // .then((response) => {
+    // let pokemonNames = response.data;
+    // this.setState({rawData: pokemonNames.pokemon_species});
+
+    // return (
+    //   <form>
+    //     <Grid container spacing={3}>
+          
+    //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+            
+    //       </Grid>
+    //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+    //         <TextField fullWidth variant="outlined" placeholder="search by #" />
+    //       </Grid>
+    //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+    //         <TextField
+    //           fullWidth
+    //           variant="outlined"
+    //           placeholder="search by type"
+    //         />
+    //       </Grid>
+    //     </Grid>
+    //   </form>
+   );
   }
 }
 export default App;
