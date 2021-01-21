@@ -14,7 +14,7 @@ class App extends React.Component {
       pokemonInfo: {
         name: "",
         data: "",
-        error: ""
+        error: "",
       },
     };
   }
@@ -39,13 +39,13 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className="App"> <form
-            onSubmit={(event) => {
-              this.getPokemonNames(event);
-            }}
-          >
-        <Grid container spacing={3} className="container">
-         
+      <div className="App">
+        <form
+          onSubmit={(event) => {
+            this.getPokemonNames(event);
+          }}
+        >
+          <Grid container spacing={3} className="container">
             <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
               <TextField
                 fullWidth
@@ -61,7 +61,7 @@ class App extends React.Component {
                 value={this.state.pokemonInfo.name}
                 error={this.state.pokemonInfo.error}
                 onChange={(event) => {
-                  this.updateForm('pokemonInfo.name',event);
+                  this.updateForm("pokemonInfo.name", event);
                 }}
               />
             </Grid>
@@ -73,8 +73,8 @@ class App extends React.Component {
               />
             </Grid>
             <Button></Button>
-           </Grid>
-           </form>
+          </Grid>
+        </form>
       </div>
     );
   }
