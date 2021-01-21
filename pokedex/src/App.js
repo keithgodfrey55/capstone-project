@@ -47,7 +47,6 @@ class App extends React.Component {
         console.log(this.pokeID);
         return this.pokeID;
       });
-      console.log(this.pokeID);
   }
   // getPokeInfo(name) {
   //   axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
@@ -62,7 +61,6 @@ class App extends React.Component {
     let regex = new RegExp (`^${event.target.value}`)
     for(let x = 0;x < this.state.pokemonSpecies.length; x++){
       if(regex.exec(this.state.pokemonSpecies[x].name)){
-        // this.setState({pokeNames:[ ...this.state.pokeNames, this.state.pokemonSpecies[x].name]})
         myArray.push(this.state.pokemonSpecies[x].name);
       }
     }
@@ -94,7 +92,6 @@ class App extends React.Component {
             <Autocomplete
               options={this.state.pokeNames}
               getOptionLabel = {(option) => option}
-              // getOptionLabel={(option) => option.name}
               style={{ width: 300 }}
               renderInput={(params) => (
                 <TextField
@@ -102,7 +99,7 @@ class App extends React.Component {
                   fullWidth
                   variant="outlined"
                   placeholder="search by name"
-                  // value={this.state.pokemonInfo.name}
+                  value = {this.state.pokeNames}
                 error={this.state.pokemonInfo.error}
                 onChange={(event) => {
                   this.updateForm("pokemonInfo", event);
@@ -117,7 +114,6 @@ class App extends React.Component {
               <TextField
                 fullWidth
                 variant="outlined"
-                // value={this.state.pokemonInfo.name}
                 placeholder="search by type"
               />
             </Grid>
@@ -126,30 +122,6 @@ class App extends React.Component {
             </Grid>
           </Grid>
         </form>
-    // axios.get("https://pokeapi.co/api/v2/generation/1")
-    // .then((response) => {
-    // let pokemonNames = response.data;
-    // this.setState({rawData: pokemonNames.pokemon_species});
-
-    // return (
-    //   <form>
-    //     <Grid container spacing={3}>
-          
-    //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-            
-    //       </Grid>
-    //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-    //         <TextField fullWidth variant="outlined" placeholder="search by #" />
-    //       </Grid>
-    //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-    //         <TextField
-    //           fullWidth
-    //           variant="outlined"
-    //           placeholder="search by type"
-    //         />
-    //       </Grid>
-    //     </Grid>
-    //   </form>
    );
   }
 }
