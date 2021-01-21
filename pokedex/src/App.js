@@ -39,13 +39,13 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className="App">
-        <Grid container spacing={3} className="container">
-          <form
+      <div className="App"> <form
             onSubmit={(event) => {
               this.getPokemonNames(event);
             }}
           >
+        <Grid container spacing={3} className="container">
+         
             <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
               <TextField
                 fullWidth
@@ -73,8 +73,8 @@ class App extends React.Component {
               />
             </Grid>
             <Button></Button>
-          </form>
-        </Grid>
+           </Grid>
+           </form>
       </div>
     );
   }
