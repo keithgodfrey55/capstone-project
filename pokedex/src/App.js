@@ -63,9 +63,9 @@ class App extends React.Component {
 
   }
 
-  updateForm(which, event) {
+    updateForm(which, value) {
     let myArray = [];
-    let regex = new RegExp (`^${event.target.value}`)
+    let regex = new RegExp (`^${value}`)
     for(let x = 0;x < this.state.pokemonSpecies.length; x++){
       if(regex.exec(this.state.pokemonSpecies[x].name)){
         myArray.push(this.state.pokemonSpecies[x].name);
@@ -75,7 +75,7 @@ class App extends React.Component {
     console.log(this.state.pokeNames);
     this.setState({
       [which]: {
-        name: event.target.value,
+        name: value,
         error: this.state[which].error,
       },
     });
@@ -101,7 +101,12 @@ class App extends React.Component {
             <Autocomplete
               options={this.state.pokeNames}
               getOptionLabel = {(option) => option}
-              style={{ width: 300 }}
+		style={{ width: 300 }}
+	    
+                onChange={(event, newValue) => {
+		    console.log(newValue);
+                  this.updateForm("pokemonInfo", newValue);
+                }}
               renderInput={(params) => (
                 <TextField
                 {...params}
@@ -110,11 +115,21 @@ class App extends React.Component {
                   placeholder="search by name"
                   value = {this.state.pokeNames}
                 error={this.state.pokemonInfo.error}
-                onChange={(event) => {
-                  this.updateForm("pokemonInfo", event);
-                }}
+
                 />
-              )}
+              )
+	      }
+	    	onInputChange={(event, value) => {
+		if(event.type == 'change'){
+		    // user has typed in
+		    this.updateForm("pokemonInfo", event.target.value);
+		}
+		if(event.type == 'click'){
+		    // user has clicked
+		    this.updateForm("pokemonInfo", value);
+		}
+		}}
+
             />
                
               
