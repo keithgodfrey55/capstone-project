@@ -49,13 +49,20 @@ class App extends React.Component {
       });
       console.log(this.pokeID);
   }
-  // getPokeInfo(name) {
-  //   axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
-  //     .then((response) => {
-  //     let pokemonNames = response.data;
-  //     this.setState()
-  //     console.log(this.state.pokemonInfo);
-  //     });
+
+  getPokemonNumber(event) {
+    event.preventDefault();
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.id}`)
+    .then((response) => {
+      let pokemonData = response.data;
+        this.setState({ rawData: pokemonData });
+        this.pokeID = this.state.rawData.id;
+        console.log(this.state.rawData);
+        console.log(this.pokeID);
+        return this.pokeID;
+    })
+
+  }
 
   updateForm(which, event) {
     let myArray = [];
@@ -87,6 +94,8 @@ class App extends React.Component {
               <TextField
                 fullWidth
                 variant="outlined"
+                type="number"
+                inputProps = {{min: 1, max: 151}}
                 placeholder="search by #"
               />
             </Grid>
@@ -126,30 +135,6 @@ class App extends React.Component {
             </Grid>
           </Grid>
         </form>
-    // axios.get("https://pokeapi.co/api/v2/generation/1")
-    // .then((response) => {
-    // let pokemonNames = response.data;
-    // this.setState({rawData: pokemonNames.pokemon_species});
-
-    // return (
-    //   <form>
-    //     <Grid container spacing={3}>
-          
-    //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-            
-    //       </Grid>
-    //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-    //         <TextField fullWidth variant="outlined" placeholder="search by #" />
-    //       </Grid>
-    //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-    //         <TextField
-    //           fullWidth
-    //           variant="outlined"
-    //           placeholder="search by type"
-    //         />
-    //       </Grid>
-    //     </Grid>
-    //   </form>
    );
   }
 }
