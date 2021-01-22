@@ -83,24 +83,6 @@ class App extends React.Component {
   }
   render() {
     return (
-<<<<<<< HEAD
-        <form
-          onSubmit={(event) => {
-            this.getPokemonNames(event);
-          }}
-        >
-          <Grid container spacing={3}>
-            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                type="number"
-                inputProps = {{min: 1, max: 151}}
-                placeholder="search by #"
-              />
-            </Grid>
-            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-=======
       <form
         onSubmit={(event) => {
           this.getPokemonNames(event);
@@ -111,7 +93,6 @@ class App extends React.Component {
             <TextField fullWidth variant="outlined" placeholder="search by #" />
           </Grid>
           <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
->>>>>>> Further updates
             <Autocomplete
               options={this.state.pokeNames}
               getOptionLabel={(option) => option}
