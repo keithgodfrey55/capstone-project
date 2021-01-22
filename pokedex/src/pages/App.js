@@ -2,15 +2,15 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
-import pokemonPage from "./pokemonPage";
+import PokemonPage from "./pokemonPage";
 import Button from "@material-ui/core/Button";
-import PokemonData from "./pokenames";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import "./App.css";
+import "../css/App.css";
 
 class App extends React.Component {
   constructor(props) {
     const pokeID = '';
+    let pokemonid = [];
     super(props);
     this.state = {
       rawData: "",
@@ -23,19 +23,29 @@ class App extends React.Component {
         name:'',
         url:''
       }],
-      pokeNames:['']
+      pokeNames:[''],
+      pokeNumber: ['']
     };
   }
   componentDidMount(){
     axios.get(`https://pokeapi.co/api/v2/generation/1/`)
     .then((res)=>{
-      console.log(res.data.pokemon_species[100].name)
       this.setState({pokemonSpecies: res.data.pokemon_species});
-      console.log(this.state.pokemonSpecies[7].name)
     } ) 
+    // axios
+    //   .get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.number}`)
+    //   .then((response) => {
+    //     this.setState({pokemonInfo: {number: response.data.id}})
+    //   })
   }
+ GetPokeNumbers(pokemonid){
+    for(let x = 1; x <= 151; x++){
+        pokemonid.push(x);
+    }console.log(pokemonid);
+    return pokemonid;
+}
 
-  getPokemonNames(event) {
+ GetPokemonNames(event) {
     event.preventDefault();
     axios
       .get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`)
@@ -48,6 +58,7 @@ class App extends React.Component {
         return this.pokeID;
       });
   }
+    
   // getPokeInfo(name) {
   //   axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
   //     .then((response) => {
@@ -77,16 +88,29 @@ class App extends React.Component {
     return (
         <form
           onSubmit={(event) => {
-            this.getPokemonNames(event);
+            this.GetPokemonNames(event);
           }}
         >
           <Grid container spacing={3}>
             <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder="search by #"
-              />
+            <Autocomplete
+              options={this.state.pokeNames}
+              getOptionLabel = {(option) => option}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                {...params}
+                  fullWidth
+                  variant="outlined"
+                  placeholder="search by id"
+                  value = {this.state.pokemonInfo.number}
+                error={this.state.pokemonInfo.error}
+                onChange={(event) => {
+                  this.updateForm("pokemonInfo", event);
+                }}
+                />
+              )}
+            />
             </Grid>
             <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
             <Autocomplete
