@@ -120,11 +120,11 @@ class App extends React.Component {
               )
 	      }
 	    	onInputChange={(event, value) => {
-		if(event.type == 'change'){
+		if(event.type === 'change'){
 		    // user has typed in
 		    this.updateForm("pokemonInfo", event.target.value);
 		}
-		if(event.type == 'click'){
+		if(event.type === 'click'){
 		    // user has clicked
 		    this.updateForm("pokemonInfo", value);
 		}
