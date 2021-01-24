@@ -9,8 +9,9 @@ class PokemonPage extends React.Component{
         this.state={
             pName:'',
             pId: '',
-            pAbilities: [''],
-            pType: ['']
+            pAbilities: [],
+            pType: [],
+            poke: []
 
         }
     }
@@ -19,29 +20,33 @@ class PokemonPage extends React.Component{
         axios
           .get(`https://pokeapi.co/api/v2/pokemon/1`)
           .then((response) => { console.log(response)
-            this.setState({pName: response.data.species.name, pId: response.data.id})
-            for(let x = 0; x < response.data.abilities.length; x++){
-                state.pAbilities.push(response.data.abilities[x].ability.name)
-            }
-            for(let i = 0; i < response.data.types.length; i++){
-                state.pType.push(response.data.types[i].type.name)
-            }
+            this.setState({poke: response});
+        //     console.log(this.state.poke);
+        //     this.setState({pName: response.data.species.name, pId: response.data.id})
+        //     for(let x = 0; x < response.data.abilities.length; x++){
+        //         state.pAbilities.push(response.data.abilities[x].ability.name)
+        //     }
+        //     for(let i = 0; i < response.data.types.length; i++){
+        //         state.pType.push(response.data.types[i].type.name)
+        //     }
            
           });
           
       }
       
     render(){
-        console.log(this.state.pType)
-          console.log(this.state.pAbilities)
-          console.log(this.state.pName)
-          console.log(this.state.pId)
-        return(
-            <div>
+       
+        return( 
+            <div>{this.state.poke.map(poke => (
+                        <div>
+                            <div>{poke.data.abilities.ability.name} </div>
+                        </div>
+                    ))}
                 <Grid container spacing={3}>
                     <Grid item>
-                    <p>{this.state.pName}</p>
-                    <p>{this.state.pAbilities}</p>
+                   
+                    {/* <p>{this.state.pName}</p>
+                    <p>{this.state.pAbilities[1]}</p> */}
                     </Grid>
                     <Grid item>
                         <img id='img' src = "https://pokeres.bastionbot.org/images/pokemon/1.png" />

@@ -15,7 +15,7 @@ ReactDOM.render(
       </Grid>
     </Grid>
 
-    {/* <App /> */}
+    <App />
     <PokemonPage />
   </React.StrictMode>,
   document.getElementById("root")
