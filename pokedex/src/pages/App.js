@@ -67,19 +67,19 @@ class App extends React.Component {
   //     console.log(this.state.pokemonInfo);
   //     });
 
-  updateForm(which, event) {
+  updateForm(which, value) {
     let myArray = [];
-    let regex = new RegExp (`^${event.target.value}`)
-    for(let x = 0;x < this.state.pokemonSpecies.length; x++){
-      if(regex.exec(this.state.pokemonSpecies[x].name)){
+    let regex = new RegExp(`^${value}`);
+    for (let x = 0; x < this.state.pokemonSpecies.length; x++) {
+      if (regex.exec(this.state.pokemonSpecies[x].name)) {
         myArray.push(this.state.pokemonSpecies[x].name);
       }
     }
-    this.setState({pokeNames: myArray})
+    this.setState({ pokeNames: myArray });
     console.log(this.state.pokeNames);
     this.setState({
       [which]: {
-        name: event.target.value,
+        name: value,
         error: this.state[which].error,
       },
     });
@@ -115,38 +115,45 @@ class App extends React.Component {
             <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
             <Autocomplete
               options={this.state.pokeNames}
-              getOptionLabel = {(option) => option}
+              getOptionLabel={(option) => option}
               style={{ width: 300 }}
               renderInput={(params) => (
                 <TextField
-                {...params}
+                  {...params}
                   fullWidth
                   variant="outlined"
                   placeholder="search by name"
-                  value = {this.state.pokeNames}
-                error={this.state.pokemonInfo.error}
-                onChange={(event) => {
-                  this.updateForm("pokemonInfo", event);
-                }}
+                  value={this.state.pokeNames}
+                  error={this.state.pokemonInfo.error}
                 />
               )}
+              onInputChange={(event, value) => {
+                if (event.type === "change") {
+                  // user has typed in
+                  this.updateForm("pokemonInfo", event.target.value);
+                }
+                if (event.type === "click") {
+                  // user has clicked
+                  this.updateForm("pokemonInfo", value);
+                }
+              }}
             />
-               
-              
-            </Grid>
-            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder="search by type"
-              />
-            </Grid>
-            <Grid item xs={12} align='center'>
-            <Button type='submit' variant='contained'>Search</Button>
-            </Grid>
           </Grid>
-        </form>
-   );
+          <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="search by type"
+            />
+          </Grid>
+          <Grid item xs={12} align="center">
+            <Button type="submit" variant="contained">
+              Search
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+    );
   }
 }
 export default App;
