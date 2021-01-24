@@ -29,6 +29,10 @@ class PokemonPage extends React.Component {
     };
   }
   componentDidMount() {
+    axios.get(`https://pokeapi.co/api/v2/generation/1/`)
+    .then((res)=>{
+      this.setState({pokemonSpecies: res.data.pokemon_species});
+    }) 
     let state = this.state;
     axios.get(`https://pokeapi.co/api/v2/pokemon/1`).then((response) => {
       console.log(response);
@@ -85,20 +89,7 @@ class PokemonPage extends React.Component {
       <form onSubmit={(event) => {
         this.GetPokemonNames(event);
       }}>
-        <div>
-          <Grid container spacing={3}>
-            <Grid item>
-              <p>{this.state.pName}</p>
-              <p>{this.state.pAbilities}</p>
-            </Grid>
-            <Grid item>
-              <img
-                id="img"
-                src="https://pokeres.bastionbot.org/images/pokemon/1.png"
-              />
-            </Grid>
-          </Grid>
-        </div>
+        
         <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
           <Autocomplete
             options={this.state.pokeNames}
@@ -126,6 +117,20 @@ class PokemonPage extends React.Component {
             }}
           />
         </Grid>
+        <div>
+          <Grid container spacing={3}>
+            <Grid item>
+              <p>{this.state.pName}</p>
+              <p>{this.state.pAbilities}</p>
+            </Grid>
+            <Grid item>
+              <img
+                id="img"
+                src="https://pokeres.bastionbot.org/images/pokemon/1.png"
+              />
+            </Grid>
+          </Grid>
+        </div>
       </form>
     );
   }

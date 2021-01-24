@@ -9,8 +9,8 @@ import "../css/App.css";
 
 class App extends React.Component {
   constructor(props) {
-    const pokeID = '';
-    let pokemonid = [];
+    // const pokeID = '';
+    // let pokemonid = [];
     super(props);
     this.state = {
       rawData: "",
@@ -86,82 +86,85 @@ class App extends React.Component {
   }
   render() {
     return (
-        <form
-          onSubmit={(event) => {
-            this.GetPokemonNames(event);
-          }}
-        >
-          <Grid container spacing={3}>
-            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                type="number"
-                inputProps = {{min: 1, max: 151}}
-                placeholder="search by #"
-              />
-            </Grid>
-            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-            <Autocomplete
-              options={this.state.pokeNames}
-              getOptionLabel = {(option) => option}
-              style={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField
-                {...params}
-                  fullWidth
-                  variant="outlined"
-                  placeholder="search by id"
-                  value = {this.state.pokemonInfo.number}
-                error={this.state.pokemonInfo.error}
-                onChange={(event) => {
-                  this.updateForm("pokemonInfo", event);
-                }}
-                />
-              )}
-            />
-            </Grid>
-            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-            <Autocomplete
-              options={this.state.pokeNames}
-              getOptionLabel={(option) => option}
-              style={{ width: 300 }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  variant="outlined"
-                  placeholder="search by name"
-                  value={this.state.pokeNames}
-                  error={this.state.pokemonInfo.error}
-                />
-              )}
-              onInputChange={(event, value) => {
-                if (event.type === "change") {
-                  // user has typed in
-                  this.updateForm("pokemonInfo", event.target.value);
-                }
-                if (event.type === "click") {
-                  // user has clicked
-                  this.updateForm("pokemonInfo", value);
-                }
-              }}
-            />
-          </Grid>
-          <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="search by type"
-            />
-          </Grid>
-          <Grid item xs={12} align="center">
-            <Button type="submit" variant="contained">
-              Search
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+      <div></div>
+
+      //   <form
+      //     onSubmit={(event) => {
+      //       this.GetPokemonNames(event);
+      //     }}
+      //   >
+      //     <Grid container spacing={3}>
+      //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+      //         <TextField
+      //           fullWidth
+      //           variant="outlined"
+      //           type="number"
+      //           inputProps = {{min: 1, max: 151}}
+      //           placeholder="search by #"
+      //         />
+      //       </Grid>
+      //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+      //       <Autocomplete
+      //         options={this.state.pokeNames}
+      //         getOptionLabel = {(option) => option}
+      //         style={{ width: 300 }}
+      //         renderInput={(params) => (
+      //           <TextField
+      //           {...params}
+      //             fullWidth
+      //             variant="outlined"
+      //             placeholder="search by id"
+      //             value = {this.state.pokemonInfo.number}
+      //           error={this.state.pokemonInfo.error}
+      //           onChange={(event) => {
+      //             this.updateForm("pokemonInfo", event);
+      //           }}
+      //           />
+      //         )}
+      //       />
+      //       </Grid>
+      //       <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+      //       <Autocomplete
+      //         options={this.state.pokeNames}
+      //         getOptionLabel={(option) => option}
+      //         style={{ width: 300 }}
+      //         renderInput={(params) => (
+      //           <TextField
+      //             {...params}
+      //             fullWidth
+      //             variant="outlined"
+      //             placeholder="search by name"
+      //             value={this.state.pokeNames}
+      //             error={this.state.pokemonInfo.error}
+      //           />
+      //         )}
+      //         onInputChange={(event, value) => {
+      //           if (event.type === "change") {
+      //             // user has typed in
+      //             this.updateForm("pokemonInfo", event.target.value);
+      //           }
+      //           if (event.type === "click") {
+      //             // user has clicked
+      //             this.updateForm("pokemonInfo", value);
+      //           }
+      //         }}
+      //       />
+      //     </Grid>
+      //     <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+      //       <TextField
+      //         fullWidth
+      //         variant="outlined"
+      //         placeholder="search by type"
+      //       />
+      //     </Grid>
+      //     <Grid item xs={12} align="center">
+      //       <Button type="submit" variant="contained">
+      //         Search
+      //       </Button>
+      //     </Grid>
+      //   </Grid>
+      // </form>
+  
     );
   }
 }

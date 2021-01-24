@@ -58,9 +58,6 @@ ReactDOM.render(
           </Route>
         </Switch>
       </div>
-      
-    {/* <App /> */}
-    <PokemonPage />
       <App />
     </Router>
   </React.StrictMode>,
