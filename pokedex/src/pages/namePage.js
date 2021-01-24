@@ -49,6 +49,23 @@ class PokemonPage extends React.Component {
     });
   }
 
+  SearchPokemon() {
+    let state = this.state;
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`).then((response) => {
+      console.log(response);
+      this.setState({
+        pName: response.data.species.name,
+        pId: response.data.id,
+      });
+      for (let x = 0; x < response.data.abilities.length; x++) {
+        state.pAbilities.push(response.data.abilities[x].ability.name);
+      }
+      for (let i = 0; i < response.data.types.length; i++) {
+        state.pType.push(response.data.types[i].type.name);
+      }
+    });
+  }
+
   GetPokemonNames(event) {
     event.preventDefault();
     axios
@@ -78,7 +95,7 @@ class PokemonPage extends React.Component {
         error: this.state[which].error,
       },
     });
-  }
+  
 
   render() {
     console.log(this.state.pType);
@@ -126,7 +143,7 @@ class PokemonPage extends React.Component {
             <Grid item>
               <img
                 id="img"
-                src="https://pokeres.bastionbot.org/images/pokemon/1.png"
+                src="https://pokeres.bastionbot.org/images/pokemon/" +{this.state.pId}+".png"
               />
             </Grid>
           </Grid>
