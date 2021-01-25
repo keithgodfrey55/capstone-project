@@ -5,6 +5,24 @@ import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "../css/pokePage.css";
+import Bug from "../TypeImages/BugType.png";
+import Dark from "../TypeImages/DarkType.png";
+import Dragon from "../TypeImages/DragonType.png";
+import Electric from "../TypeImages/ElectricType.png";
+import Fairy from "../TypeImages/FairyType.png";
+import Fighting from "../TypeImages/FightingType.png";
+import Fire from "../TypeImages/FireType.png";
+import Flying from "../TypeImages/FlyingType.png";
+import Ghost from "../TypeImages/GhostType.png";
+import Grass from "../TypeImages/GrassType.png";
+import Ground from "../TypeImages/GroundType.png";
+import Ice from "../TypeImages/IceType.png";
+import Normal from "../TypeImages/NormalType.png";
+import Poison from "../TypeImages/PoisonType.png";
+import Psychic from "../TypeImages/PsychicType.png";
+import Rock from "../TypeImages/RockType.png";
+import Steel from "../TypeImages/SteelType.png";
+import Water from "../TypeImages/WaterType.png";
 
 class PokemonPage extends React.Component {
   constructor(props) {
@@ -12,8 +30,11 @@ class PokemonPage extends React.Component {
     this.state = {
       pName: "",
       pId: "",
-      pAbilities: [""],
-      pType: [""],
+      pAbilities: [],
+      pType: [],
+      pTypeImgStorage: [Bug,Dark,Dragon,Electric,Fairy,Fighting,
+        Fire,Flying,Ghost,Grass,Ground,Ice,Normal,Poison,Psychic,Rock,Steel,Water],
+      pTypeImg: [],
       rawData: "",
       pokemonInfo: {
         name: "",
@@ -87,6 +108,20 @@ class PokemonPage extends React.Component {
           pId: response.data.id,
         });
       });
+      this.AssignTypeImg();
+  }
+  AssignTypeImg(){
+    let state = this.state;
+    for (let i = 0; i < 2; i++) {
+      state.pTypeImg.pop(state.pTypeImg[i]);
+    }
+    for(let x = 0;x < state.pType.length; x++){
+      for(let i = 0; i < state.pTypeImg.length; i++){
+        if(state.pType[x] === state.pTypeImgStorage[i]){
+          state.pTypeImg.push(state.pTypeImgStorage[i]);
+        }
+      }
+    }
   }
 
   render() {
@@ -94,6 +129,7 @@ class PokemonPage extends React.Component {
     console.log(this.state.pAbilities);
     console.log(this.state.pName);
     console.log(this.state.pId);
+    console.log(this.state.pTypeImg)
     return (
       <form
         onSubmit={(event) => {
@@ -139,6 +175,7 @@ class PokemonPage extends React.Component {
               <p>{this.state.pId}</p>
               <p>{this.state.pAbilities}</p>
               <p>{this.state.pType}</p>
+              
             </Grid>
             <Grid item>
               <img
