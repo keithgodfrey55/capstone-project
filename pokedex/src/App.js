@@ -64,11 +64,11 @@ class App extends React.Component {
 
   }
 
-  updateForm(which, value) {
+    updateForm(which, value) {
     let myArray = [];
-    let regex = new RegExp(`^${value}`);
-    for (let x = 0; x < this.state.pokemonSpecies.length; x++) {
-      if (regex.exec(this.state.pokemonSpecies[x].name)) {
+    let regex = new RegExp (`^${value}`)
+    for(let x = 0;x < this.state.pokemonSpecies.length; x++){
+      if(regex.exec(this.state.pokemonSpecies[x].name)){
         myArray.push(this.state.pokemonSpecies[x].name);
       }
     }
@@ -83,20 +83,31 @@ class App extends React.Component {
   }
   render() {
     return (
-      <form
-        onSubmit={(event) => {
-          this.getPokemonNames(event);
-        }}
-      >
-        <Grid container spacing={3}>
-          <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-            <TextField fullWidth variant="outlined" placeholder="search by #" />
-          </Grid>
-          <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+        <form
+          onSubmit={(event) => {
+            this.getPokemonNames(event);
+          }}
+        >
+          <Grid container spacing={3}>
+            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                type="number"
+                inputProps = {{min: 1, max: 151}}
+                placeholder="search by #"
+              />
+            </Grid>
+            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
             <Autocomplete
               options={this.state.pokeNames}
-              getOptionLabel={(option) => option}
-              style={{ width: 300 }}
+              getOptionLabel = {(option) => option}
+		style={{ width: 300 }}
+	    
+                onChange={(event, newValue) => {
+		    console.log(newValue);
+                  this.updateForm("pokemonInfo", newValue);
+                }}
               renderInput={(params) => (
                 <TextField
                   {...params}
