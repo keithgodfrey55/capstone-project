@@ -133,19 +133,22 @@ class PokemonPage extends React.Component {
           </Button>
         </Grid>
         <div>
+
           <Grid container spacing={3}>
-            <Grid item>
-              <p>{this.state.pName}</p>
-              <p>{this.state.pId}</p>
-              <p>{this.state.pAbilities}</p>
-              <p>{this.state.pType}</p>
-            </Grid>
-            <Grid item>
+            <Grid item xs={1}></Grid>
+            <Grid item xs={5}>
               <img
                 id="img"
                 src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`}
               />
             </Grid>
+            <Grid item xs={5}>
+              <p>{this.state.pName}</p>
+              <p>{this.state.pId}</p>
+              <p>{this.state.pAbilities}</p>
+              <p>{this.state.pType}</p>
+            </Grid>
+            
           </Grid>
         </div>
       </form>

@@ -2,9 +2,12 @@
   "short_name": "React App",
   "name": "Create React App Sample",
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   
 =======
 >>>>>>> b4d769c6d0f55c695862580f512a71f456a0b949
+>>>>>>> master
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
