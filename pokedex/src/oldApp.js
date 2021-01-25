@@ -10,7 +10,7 @@ import "./App.css";
 
 class App extends React.Component {
   constructor(props) {
-    const pokeID = '';
+    const pokeID = "";
     super(props);
     this.state = {
       rawData: "",
@@ -19,20 +19,21 @@ class App extends React.Component {
         number: "",
         error: "",
       },
-      pokemonSpecies:[{ 
-        name:'',
-        url:''
-      }],
-      pokeNames:['']
+      pokemonSpecies: [
+        {
+          name: "",
+          url: "",
+        },
+      ],
+      pokeNames: [""],
     };
   }
-  componentDidMount(){
-    axios.get(`https://pokeapi.co/api/v2/generation/1/`)
-    .then((res)=>{
-      console.log(res.data.pokemon_species[100].name)
-      this.setState({pokemonSpecies: res.data.pokemon_species});
-      console.log(this.state.pokemonSpecies[7].name)
-    } ) 
+  componentDidMount() {
+    axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
+      console.log(res.data.pokemon_species[100].name);
+      this.setState({ pokemonSpecies: res.data.pokemon_species });
+      console.log(this.state.pokemonSpecies[7].name);
+    });
   }
 
   getPokemonNames(event) {
@@ -71,7 +72,7 @@ class App extends React.Component {
         myArray.push(this.state.pokemonSpecies[x].name);
       }
     }
-    this.setState({pokeNames: myArray})
+    this.setState({ pokeNames: myArray });
     console.log(this.state.pokeNames);
     this.setState({
       [which]: {
@@ -109,44 +110,41 @@ class App extends React.Component {
                 }}
               renderInput={(params) => (
                 <TextField
-                {...params}
+                  {...params}
                   fullWidth
                   variant="outlined"
                   placeholder="search by name"
-                  value = {this.state.pokeNames}
-                error={this.state.pokemonInfo.error}
-
+                  value={this.state.pokeNames}
+                  error={this.state.pokemonInfo.error}
                 />
-              )
-	      }
-	    	onInputChange={(event, value) => {
-		if(event.type == 'change'){
-		    // user has typed in
-		    this.updateForm("pokemonInfo", event.target.value);
-		}
-		if(event.type == 'click'){
-		    // user has clicked
-		    this.updateForm("pokemonInfo", value);
-		}
-		}}
-
+              )}
+              onInputChange={(event, value) => {
+                if (event.type === "change") {
+                  // user has typed in
+                  this.updateForm("pokemonInfo", event.target.value);
+                }
+                if (event.type === "click") {
+                  // user has clicked
+                  this.updateForm("pokemonInfo", value);
+                }
+              }}
             />
-               
-              
-            </Grid>
-            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder="search by type"
-              />
-            </Grid>
-            <Grid item xs={12} align='center'>
-            <Button type='submit' variant='contained'>Search</Button>
-            </Grid>
           </Grid>
-        </form>
-   );
+          <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="search by type"
+            />
+          </Grid>
+          <Grid item xs={12} align="center">
+            <Button type="submit" variant="contained">
+              Search
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+    );
   }
 }
 export default App;
