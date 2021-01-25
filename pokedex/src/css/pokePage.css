@@ -3,4 +3,16 @@
     width: 85%;
     border-width:3px;
     border-style:solid;
+    box-shadow: 3px 3px rgb(117, 116, 116);
+    background-color: white;
+    margin: 5px;
+    padding: 5px;
+    float:left;
+}
+#text{
+    margin: 2%;
+    outline-color: red;
+    background-color: rgb(252, 17, 17);
+    color: white;
+    box-shadow: 3px 3px rgb(49, 49, 49);
 }

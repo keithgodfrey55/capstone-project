@@ -5,9 +5,24 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: linear-gradient(180deg, red, orange);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+#home{
+  margin: 1%;
+}
+.nav_organization{
+  align-content: center;
+  justify-self: center;
+  display: inline;
+}
+ul{
+  display: inline;
+  }
+li{
+display: inline;
 }
