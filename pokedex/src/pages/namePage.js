@@ -14,6 +14,7 @@ class PokemonPage extends React.Component {
       pId: "25",
       pAbilities: [],
       pType: [],
+      pokeDescription: "",
       rawData: "",
       pokemonInfo: {
         name: "",
@@ -32,9 +33,10 @@ class PokemonPage extends React.Component {
         name: "",
         id: "",
         ability: "",
-        type: ""
-
-      } 
+        type: "",
+        description: ""
+      }
+      
     };
   }
   componentDidMount() {
@@ -44,13 +46,24 @@ class PokemonPage extends React.Component {
   }
   GetPokemonNames(event) {
     event.preventDefault();
+    let first_call = axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`);
+    let second_call = axios.get(`https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`);
     axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`)
-      .then((response) => {
-        let pokemonData = response.data;
-        this.setState({ rawData: pokemonData });
-      });
+      .all([first_call, second_call])
+      .then(axios.spread((...responses) => {
+        const resp_1 = responses[0];
+        const resp_2 = responses[1];
+        console.log("RESPONSE", responses);
+        let pokemonData = resp_1.data;
+        let flavorText = resp_2.data.flavor_text_entries.flavor_text;
+        let state = this.state;
+        // state.rawData = pokemonData;
+        // state.pokeDescription = flavorText;
+        console.log("FLAVORTEXT", flavorText);
+        this.setState({rawData: pokemonData, pokeDescription: flavorText})
+      }));
   }
+  
   updateForm(which, value) {
     let myArray = [];
     let regex = new RegExp(`^${value}`);
@@ -96,12 +109,16 @@ class PokemonPage extends React.Component {
           labels: {name: "NAME",
                   id: "ID",
                   ability: "ABILITIES",
-                  type: "TYPE"}
+                  type: "TYPE",
+                  description: "DESCRIPTION"
+                }
 
         });
         
       });
   }
+
+  
 
   render() {
     console.log(this.state.pType);
@@ -112,6 +129,7 @@ class PokemonPage extends React.Component {
       <form
         onSubmit={(event) => {
           this.SearchPokemon(event);
+          this.GetPokemonNames(event);
         }}
       >
         <Grid item align="center" xs={12}>
@@ -156,7 +174,7 @@ class PokemonPage extends React.Component {
                 src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`}
               />
             </Grid>
-            <Grid item xs={5} align="center">
+            <Grid item xs={2} align="center">
               <h3>{this.state.labels.name}</h3>
               <p>{this.state.pName}</p>
               <h3>{this.state.labels.id}</h3>
@@ -176,6 +194,9 @@ class PokemonPage extends React.Component {
                 <li>{type}</li>
                 </ul>
                 ))}
+              
+              <h3>{this.state.labels.description}</h3>
+              <p>{this.state.pokeDescription}</p>
             </Grid>         
           </Grid>
         </div>
