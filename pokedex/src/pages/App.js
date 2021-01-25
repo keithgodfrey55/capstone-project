@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
-import PokemonPage from "./pokemonPage";
+
 import Button from "@material-ui/core/Button";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "../css/App.css";
@@ -92,6 +92,15 @@ class App extends React.Component {
           }}
         >
           <Grid container spacing={3}>
+            <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                type="number"
+                inputProps = {{min: 1, max: 151}}
+                placeholder="search by #"
+              />
+            </Grid>
             <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
             <Autocomplete
               options={this.state.pokeNames}

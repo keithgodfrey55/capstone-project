@@ -1,9 +1,16 @@
 
-function GetPokeNumbers(){
-    let pokemonid = [];
-    for(let x = 1; x <= 151; x++){
-        pokemonid.push(x);
+function GetPokeNumbers(num){
+    // let pokemonid = [];
+    // for(let x = 1; x <= 151; x++){
+    //     pokemonid.push(x);
+    // }
+    // console.log(pokemonid);
+    // return pokemonid;
+
+    if(num <=0 || num > 151) {
+        return "Number not valid";
     }
-    console.log(pokemonid);
-    return pokemonid;
+    return '';
 }
+export default GetPokeNumbers;
+
