@@ -11,9 +11,9 @@ class PokemonPage extends React.Component {
     super(props);
     this.state = {
       pName: "",
-      pId: "",
-      pAbilities: [""],
-      pType: [""],
+      pId: "25",
+      pAbilities: [],
+      pType: [],
       rawData: "",
       pokemonInfo: {
         name: "",
@@ -28,6 +28,13 @@ class PokemonPage extends React.Component {
       ],
       pokeNames: [""],
       pokeNumber: [""],
+      labels: {
+        name: "",
+        id: "",
+        ability: "",
+        type: ""
+
+      } 
     };
   }
   componentDidMount() {
@@ -82,10 +89,17 @@ class PokemonPage extends React.Component {
         for (let i = 0; i < response.data.types.length; i++) {
           state.pType.push(response.data.types[i].type.name);
         }
+        
         this.setState({
           pName: response.data.species.name,
           pId: response.data.id,
+          labels: {name: "NAME",
+                  id: "ID",
+                  ability: "ABILITIES",
+                  type: "TYPE"}
+
         });
+        
       });
   }
 
@@ -100,7 +114,7 @@ class PokemonPage extends React.Component {
           this.SearchPokemon(event);
         }}
       >
-        <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
+        <Grid item align="center" xs={12}>
           <Autocomplete
             options={this.state.pokeNames}
             getOptionLabel={(option) => option}
@@ -136,19 +150,33 @@ class PokemonPage extends React.Component {
 
           <Grid container spacing={3}>
             <Grid item xs={1}></Grid>
-            <Grid item xs={5}>
+            <Grid item xs={5} align="center">
               <img
                 id="img"
                 src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`}
               />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={5} align="center">
+              <h3>{this.state.labels.name}</h3>
               <p>{this.state.pName}</p>
+              <h3>{this.state.labels.id}</h3>
               <p>{this.state.pId}</p>
-              <p>{this.state.pAbilities}</p>
-              <p>{this.state.pType}</p>
-            </Grid>
-            
+              <h3>{this.state.labels.ability}</h3>
+              
+              {this.state.pAbilities.map((ability) => (
+                <ul>
+                <li>{ability}</li>
+                </ul>
+                ))}
+              
+              <h3>{this.state.labels.type}</h3>
+
+              {this.state.pType.map((type) => (
+                <ul>
+                <li>{type}</li>
+                </ul>
+                ))}
+            </Grid>         
           </Grid>
         </div>
       </form>
