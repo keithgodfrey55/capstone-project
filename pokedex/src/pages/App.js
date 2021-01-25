@@ -19,33 +19,30 @@ class App extends React.Component {
         number: "",
         error: "",
       },
-      pokemonSpecies:[{ 
-        name:'',
-        url:''
-      }],
-      pokeNames:[''],
-      pokeNumber: ['']
+      pokemonSpecies: [
+        {
+          name: "",
+          url: "",
+        },
+      ],
+      pokeNames: [""],
+      pokeNumber: [""],
     };
   }
-  componentDidMount(){
-    axios.get(`https://pokeapi.co/api/v2/generation/1/`)
-    .then((res)=>{
-      this.setState({pokemonSpecies: res.data.pokemon_species});
-    } ) 
-    // axios
-    //   .get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.number}`)
-    //   .then((response) => {
-    //     this.setState({pokemonInfo: {number: response.data.id}})
-    //   })
+  componentDidMount() {
+    axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
+      this.setState({ pokemonSpecies: res.data.pokemon_species });
+    });
   }
- GetPokeNumbers(pokemonid){
-    for(let x = 1; x <= 151; x++){
-        pokemonid.push(x);
-    }console.log(pokemonid);
+  GetPokeNumbers(pokemonid) {
+    for (let x = 1; x <= 151; x++) {
+      pokemonid.push(x);
+    }
+    console.log(pokemonid);
     return pokemonid;
-}
+  }
 
- GetPokemonNames(event) {
+  GetPokemonNames(event) {
     event.preventDefault();
     axios
       .get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`)
@@ -58,8 +55,6 @@ class App extends React.Component {
         return this.pokeID;
       });
   }
-    
-
 
   updateForm(which, value) {
     let myArray = [];
@@ -79,10 +74,7 @@ class App extends React.Component {
     });
   }
   render() {
-    return (
-        <div></div>
-      
-    );
+    return <div></div>;
   }
 }
 export default App;

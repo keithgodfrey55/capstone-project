@@ -20,20 +20,20 @@ class PokemonPage extends React.Component {
         number: "",
         error: "",
       },
-      pokemonSpecies:[{ 
-        name:'',
-        url:''
-      }],
-      pokeNames:[''],
-      pokeNumber: ['']
+      pokemonSpecies: [
+        {
+          name: "",
+          url: "",
+        },
+      ],
+      pokeNames: [""],
+      pokeNumber: [""],
     };
   }
   componentDidMount() {
-    axios.get(`https://pokeapi.co/api/v2/generation/1/`)
-    .then((res)=>{
-      this.setState({pokemonSpecies: res.data.pokemon_species});
-    }) 
-   
+    axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
+      this.setState({ pokemonSpecies: res.data.pokemon_species });
+    });
   }
   GetPokemonNames(event) {
     event.preventDefault();
@@ -42,7 +42,6 @@ class PokemonPage extends React.Component {
       .then((response) => {
         let pokemonData = response.data;
         this.setState({ rawData: pokemonData });
-        
       });
   }
   updateForm(which, value) {
@@ -61,33 +60,33 @@ class PokemonPage extends React.Component {
         error: this.state[which].error,
       },
     });
-}
-  
+  }
 
   SearchPokemon(event) {
     event.preventDefault();
     let state = this.state;
-    axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`).then((response) => {
-      console.log(response);
-      
-      for (let x = 0; x < 3; x++) {
-        state.pAbilities.pop(state.pAbilities[x]);
-      }
-      for (let i = 0; i < 2; i++) {
-        state.pType.pop(state.pType[i]);
-      }
-      for (let x = 0; x < response.data.abilities.length; x++) {
-        state.pAbilities.push(response.data.abilities[x].ability.name);
-      }
-      for (let i = 0; i < response.data.types.length; i++) {
-        state.pType.push(response.data.types[i].type.name);
-      }
-      this.setState({
-        pName: response.data.species.name,
-        pId: response.data.id,
-        
+    axios
+      .get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`)
+      .then((response) => {
+        console.log(response);
+
+        for (let x = 0; x < 3; x++) {
+          state.pAbilities.pop(state.pAbilities[x]);
+        }
+        for (let i = 0; i < 2; i++) {
+          state.pType.pop(state.pType[i]);
+        }
+        for (let x = 0; x < response.data.abilities.length; x++) {
+          state.pAbilities.push(response.data.abilities[x].ability.name);
+        }
+        for (let i = 0; i < response.data.types.length; i++) {
+          state.pType.push(response.data.types[i].type.name);
+        }
+        this.setState({
+          pName: response.data.species.name,
+          pId: response.data.id,
+        });
       });
-    });
   }
 
   render() {
@@ -96,9 +95,11 @@ class PokemonPage extends React.Component {
     console.log(this.state.pName);
     console.log(this.state.pId);
     return (
-      <form onSubmit={(event) => {
-        this.SearchPokemon(event);
-      }}>      
+      <form
+        onSubmit={(event) => {
+          this.SearchPokemon(event);
+        }}
+      >
         <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
           <Autocomplete
             options={this.state.pokeNames}
@@ -127,9 +128,9 @@ class PokemonPage extends React.Component {
           />
         </Grid>
         <Grid item xs={12} align="center">
-            <Button type="submit" variant="contained">
-               Search
-            </Button>
+          <Button type="submit" variant="contained">
+            Search
+          </Button>
         </Grid>
         <div>
           <Grid container spacing={3}>
