@@ -1,4 +1,6 @@
 #img{
-    height: 70%;
-    width: 70%;
+    height: auto;
+    width: 85%;
+    border-width:5px;
+    border-style:solid;
 }
