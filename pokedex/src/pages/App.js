@@ -86,8 +86,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div></div>
-
+        <div></div>
       //   <form
       //     onSubmit={(event) => {
       //       this.GetPokemonNames(event);

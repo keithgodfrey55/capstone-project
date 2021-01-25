@@ -95,8 +95,7 @@ class PokemonPage extends React.Component {
         error: this.state[which].error,
       },
     });
-  
-
+}
   render() {
     console.log(this.state.pType);
     console.log(this.state.pAbilities);
@@ -105,8 +104,7 @@ class PokemonPage extends React.Component {
     return (
       <form onSubmit={(event) => {
         this.GetPokemonNames(event);
-      }}>
-        
+      }}>      
         <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
           <Autocomplete
             options={this.state.pokeNames}
@@ -134,6 +132,11 @@ class PokemonPage extends React.Component {
             }}
           />
         </Grid>
+        <Grid item xs={12} align="center">
+            <Button type="submit" variant="contained">
+               Search
+            </Button>
+        </Grid>
         <div>
           <Grid container spacing={3}>
             <Grid item>
@@ -143,7 +146,7 @@ class PokemonPage extends React.Component {
             <Grid item>
               <img
                 id="img"
-                src="https://pokeres.bastionbot.org/images/pokemon/" +{this.state.pId}+".png"
+                src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`}
               />
             </Grid>
           </Grid>
