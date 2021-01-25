@@ -29,8 +29,29 @@ class PokemonPage extends React.Component {
     };
   }
   componentDidMount() {
+    axios.get(`https://pokeapi.co/api/v2/generation/1/`)
+    .then((res)=>{
+      this.setState({pokemonSpecies: res.data.pokemon_species});
+    }) 
     let state = this.state;
     axios.get(`https://pokeapi.co/api/v2/pokemon/1`).then((response) => {
+      console.log(response);
+      this.setState({
+        pName: response.data.species.name,
+        pId: response.data.id,
+      });
+      for (let x = 0; x < response.data.abilities.length; x++) {
+        state.pAbilities.push(response.data.abilities[x].ability.name);
+      }
+      for (let i = 0; i < response.data.types.length; i++) {
+        state.pType.push(response.data.types[i].type.name);
+      }
+    });
+  }
+
+  SearchPokemon() {
+    let state = this.state;
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`).then((response) => {
       console.log(response);
       this.setState({
         pName: response.data.species.name,
@@ -74,7 +95,7 @@ class PokemonPage extends React.Component {
         error: this.state[which].error,
       },
     });
-  }
+  
 
   render() {
     console.log(this.state.pType);
@@ -85,20 +106,7 @@ class PokemonPage extends React.Component {
       <form onSubmit={(event) => {
         this.GetPokemonNames(event);
       }}>
-        <div>
-          <Grid container spacing={3}>
-            <Grid item>
-              <p>{this.state.pName}</p>
-              <p>{this.state.pAbilities}</p>
-            </Grid>
-            <Grid item>
-              <img
-                id="img"
-                src="https://pokeres.bastionbot.org/images/pokemon/1.png"
-              />
-            </Grid>
-          </Grid>
-        </div>
+        
         <Grid item align="center" xs={4} sm={4} md={4} lg={4} xl={4}>
           <Autocomplete
             options={this.state.pokeNames}
@@ -126,6 +134,20 @@ class PokemonPage extends React.Component {
             }}
           />
         </Grid>
+        <div>
+          <Grid container spacing={3}>
+            <Grid item>
+              <p>{this.state.pName}</p>
+              <p>{this.state.pAbilities}</p>
+            </Grid>
+            <Grid item>
+              <img
+                id="img"
+                src="https://pokeres.bastionbot.org/images/pokemon/" +{this.state.pId}+".png"
+              />
+            </Grid>
+          </Grid>
+        </div>
       </form>
     );
   }
