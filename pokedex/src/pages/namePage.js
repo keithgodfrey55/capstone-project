@@ -57,7 +57,7 @@ class PokemonPage extends React.Component {
         Fire,Flying,Ghost,Grass,Ground,Ice,Normal,Poison,Psychic,
         Rock,Steel,Water],
       pTypeImg: [],
-      pokeDescription: "",
+      // pokeDescription: "",
       rawData: "",
       pokemonInfo: {
         name: "",
@@ -77,11 +77,9 @@ class PokemonPage extends React.Component {
         id: "",
         ability: "",
         type: "",
-        description: ""
-      }
-      
+        description: "",
+      },
     };
-    let img = "/static/media/WaterType.d28bad78.png";
   }
   componentDidMount() {
     axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
@@ -90,11 +88,14 @@ class PokemonPage extends React.Component {
   }
   GetFlavorText(event) {
     event.preventDefault();
-    let first_call = axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`);
-    let second_call = axios.get(`https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`);
-    axios
-      .all([first_call, second_call])
-      .then(axios.spread((...responses) => {
+    let first_call = axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.number}`
+    );
+    let second_call = axios.get(
+      `https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.number}`
+    );
+    axios.all([first_call, second_call]).then(
+      axios.spread((...responses) => {
         const resp_1 = responses[0];
         const resp_2 = responses[1];
         let pokemonData = resp_1.data;
@@ -102,7 +103,7 @@ class PokemonPage extends React.Component {
         this.setState({rawData: pokemonData, pokeDescription: flavorText})
       }));
   }
-  
+
   updateForm(which, value) {
     let myArray = [];
     let regex = new RegExp(`^${value}`);
@@ -164,7 +165,6 @@ class PokemonPage extends React.Component {
           pTypeImgStorage: state.pTypeImg
 
         });
-        
       });
 
   }
@@ -180,13 +180,14 @@ class PokemonPage extends React.Component {
           this.GetFlavorText(event);
         }}
       >
+        <Grid container spacing={3}>
         <Grid item align="center" xs={12}>
           <Autocomplete
             options={this.state.pokeNames}
             getOptionLabel={(option) => option}
             style={{ width: 300 }}
             renderInput={(params) => (
-              <TextField 
+              <TextField
                 id="text"
                 {...params}
                 fullWidth
@@ -209,12 +210,12 @@ class PokemonPage extends React.Component {
           />
         </Grid>
         <Grid item xs={12} align="center">
-          <Button id="text" type="submit" variant="contained">
+          <Button id="colors" type="submit" variant="contained">
             Search
           </Button>
         </Grid>
+        </Grid>
         <div>
-
           <Grid container spacing={3}>
             <Grid item xs={1}></Grid>
             <Grid item xs={5} align="center">
@@ -223,8 +224,8 @@ class PokemonPage extends React.Component {
                 src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`}
               />
             </Grid>
-            
-            <Grid item xs={2} align="center">
+
+            <Grid item xs={6} align="center">
               <h3>{this.state.labels.name}</h3>
               <p>{this.state.pName}</p>
               <h3>{this.state.labels.id}</h3>
@@ -232,16 +233,16 @@ class PokemonPage extends React.Component {
               <h3>{this.state.labels.ability}</h3>             
               {this.state.pAbilities.map((ability) => (
                 <ul>
-                <li>{ability}</li>
+                  <li>{ability}</li>
                 </ul>
-                ))}
-              
+              ))}
+
               <h3>{this.state.labels.type}</h3>
                   {tagImages}
               
               <h3>{this.state.labels.description}</h3>
               <p>{this.state.pokeDescription}</p>
-            </Grid>        
+            </Grid>
           </Grid>
         </div>
       </form>
