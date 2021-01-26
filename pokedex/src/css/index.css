@@ -28,3 +28,8 @@ ul{
 li{
 display: inline;
 }
+
+.MuiAutocomplete-popper{
+    overflow-y: scroll;
+    max-height: 33vh;
+}
