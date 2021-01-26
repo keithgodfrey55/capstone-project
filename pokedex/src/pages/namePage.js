@@ -25,16 +25,37 @@ import Steel from "../TypeImages/SteelType.png";
 import Water from "../TypeImages/WaterType.png";
 
 class PokemonPage extends React.Component {
+  type_tag_lookup = {
+    bug: Bug,
+    dark: Dark,
+    dragon: Dragon,
+    electric: Electric,
+    fairy: Fairy,
+    fighting: Fighting,
+    fire: Fire,
+    flying: Flying,
+    ghost: Ghost,
+    grass: Grass,
+    ground: Ground,
+    ice: Ice,
+    normal: Normal,
+    poison: Poison,
+    psychic: Psychic,
+    rock: Rock,
+    steel: Steel,
+    water: Water
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       pName: "",
-      pId: "25",
+      pId: "",
       pAbilities: [],
       pType: [],
-      pTypeImgStorage: ["Bug","Dark","Dragon","Electric","Fairy","Fighting",
-        "Fire","Flying","Ghost","Grass","Ground","Ice","Normal","Poison","Psychic",
-        "Rock","Steel","Water"],
+      pTypeImgStorage: [Bug,Dark,Dragon,Electric,Fairy,Fighting,
+        Fire,Flying,Ghost,Grass,Ground,Ice,Normal,Poison,Psychic,
+        Rock,Steel,Water],
       pTypeImg: [],
       pokeDescription: "",
       rawData: "",
@@ -76,13 +97,8 @@ class PokemonPage extends React.Component {
       .then(axios.spread((...responses) => {
         const resp_1 = responses[0];
         const resp_2 = responses[1];
-        console.log("RESPONSE", responses);
         let pokemonData = resp_1.data;
-        let flavorText = resp_2.data.flavor_text_entries.flavor_text;
-        let state = this.state;
-        // state.rawData = pokemonData;
-        // state.pokeDescription = flavorText;
-        console.log("FLAVORTEXT", flavorText);
+        let flavorText = resp_2.data.flavor_text_entries[0].flavor_text;
         this.setState({rawData: pokemonData, pokeDescription: flavorText})
       }));
   }
@@ -125,7 +141,17 @@ class PokemonPage extends React.Component {
         for (let i = 0; i < response.data.types.length; i++) {
           state.pType.push(response.data.types[i].type.name);
         }
+
+        state.pTypeImg = [];
         
+        for(let x = 0; x < state.pType.length; x++){    
+            //if(state.pType[x] == state.pTypeImgStorage[j]){
+              if(this.type_tag_lookup[state.pType[x]]){
+                state.pTypeImg.push(this.type_tag_lookup[state.pType[x]]);
+              }
+              
+            //}
+        }
         this.setState({
           pName: response.data.species.name,
           pId: response.data.id,
@@ -134,36 +160,20 @@ class PokemonPage extends React.Component {
                   ability: "ABILITIES",
                   type: "TYPE",
                   description: "DESCRIPTION"
-                }
+                },
+          pTypeImgStorage: state.pTypeImg
 
         });
         
       });
-      this.AssignTypeImg();
-  }
-  AssignTypeImg(){
-    let state = this.state;
-    for (let i = 0; i < 2; i++) {
-      state.pTypeImg.pop(state.pTypeImg[i]);
-    }
-    for(let x = 0;x < state.pType.length; x++){
-      for(let i = 0; i < state.pTypeImg.length; i++){
-        if(state.pType[x] == state.pTypeImgStorage[i]){
-          state.pTypeImg.push(state.pTypeImgStorage[i]);
-        }
-      }
-    }
-  }
 
-  
+  }
 
   render() {
-    console.log(this.state.pType);
-    console.log(this.state.pAbilities);
-    console.log(this.state.pName);
-    console.log(this.state.pId);
-   console.log(this.state.pTypeImgStorage);
-    return (
+    const tagImages = this.state.pTypeImgStorage.map((tag, index) => {
+      return <img key={index} src={tag} />;
+    })
+   return (
       <form
         onSubmit={(event) => {
           this.SearchPokemon(event);
@@ -219,8 +229,7 @@ class PokemonPage extends React.Component {
               <p>{this.state.pName}</p>
               <h3>{this.state.labels.id}</h3>
               <p>{this.state.pId}</p>
-              <h3>{this.state.labels.ability}</h3>
-              
+              <h3>{this.state.labels.ability}</h3>             
               {this.state.pAbilities.map((ability) => (
                 <ul>
                 <li>{ability}</li>
@@ -228,12 +237,7 @@ class PokemonPage extends React.Component {
                 ))}
               
               <h3>{this.state.labels.type}</h3>
-                <img src ={this.state.pTypeImg}/>
-              {this.state.pType.map((type) => (
-                <ul>
-                <li>{type}</li>
-                </ul>
-                ))}
+                  {tagImages}
               
               <h3>{this.state.labels.description}</h3>
               <p>{this.state.pokeDescription}</p>

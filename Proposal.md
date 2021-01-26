@@ -21,3 +21,14 @@
 -search bar
 -can give updates on prices on users watched items 
 -user login
+
+# Features left to be complete
+-implement type tags to display with given pokemon
+    -find pngs with transparent backgrounds or implement MUI chips
+    -debug and fix type image setting algorithm
+-change color of buttons
+-design background web page/fix background of home page
+-implement search by type
+-make buttons display horizontally
+-fix search by number dropdown list
+-fix horizontal scroll bar
