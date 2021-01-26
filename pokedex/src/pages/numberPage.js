@@ -182,6 +182,7 @@ class NumberPage extends React.Component {
                   fullWidth
                   variant="outlined"
                   placeholder="search by ID #"
+                  
                   value={this.state.pokemonInfo.number}
                   error={this.state.pokemonInfo.error}
                 />

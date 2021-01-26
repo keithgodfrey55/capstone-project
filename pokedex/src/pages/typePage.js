@@ -41,6 +41,7 @@ class TypePage extends React.Component {
       pokemonInfo: {
         name: "",
         number: "",
+        type: "",
         error: "",
       },
       pokemonSpecies: [
@@ -57,7 +58,8 @@ class TypePage extends React.Component {
         ability: "",
         type: "",
         description: ""
-      }
+      },
+      typeArray: [],
       
     };
     let img = "/static/media/WaterType.d28bad78.png";
@@ -99,7 +101,7 @@ class TypePage extends React.Component {
     console.log(this.state.pokeNames);
     this.setState({
       [which]: {
-        name: value,
+        type: value,
         error: this.state[which].error,
       },
     });
@@ -139,8 +141,91 @@ class TypePage extends React.Component {
         });
         
       });
-      this.AssignTypeImg();
   }
+  DeterminePokemon(event) {
+    
+    let state = this.state;
+    let myArray = [];
+    axios.get(`https://pokeapi.co/api/v2/type/${this.state.pokemonInfo.type}/`).then((res) => {
+      
+      for(let i=0; i<res.data.pokemon.length; i++) {
+        //Bug
+        if(res.data.pokemon[i].pokemon.name === "ledyba") {
+          break;
+        }
+        //Dragon
+        else if(res.data.pokemon[i].pokemon.name === "kingdra"){
+          break;
+        }
+        //Electric
+        else if(res.data.pokemon[i].pokemon.name === "chinchou"){
+          break;
+        }
+        //Fairy
+        else if(res.data.pokemon[i].pokemon.name === "cleffa"){
+          break;
+        }
+        //Fighting
+        else if(res.data.pokemon[i].pokemon.name === "heracross"){
+          break;
+        }
+        //Fire
+        else if(res.data.pokemon[i].pokemon.name === "cyndaquil"){
+          break;
+        }
+        //Flying
+        else if(res.data.pokemon[i].pokemon.name === "hoothoot"){
+          break;
+        }
+        //Ghost
+        else if(res.data.pokemon[i].pokemon.name === "misdreavus"){
+          break;
+        }
+        //Grass
+        else if(res.data.pokemon[i].pokemon.name === "chikorita"){
+          break;
+        }
+        //Ground
+        else if(res.data.pokemon[i].pokemon.name === "wooper"){
+          break;
+        }
+        //Ice
+        else if(res.data.pokemon[i].pokemon.name === "sneasel"){
+          break;
+        }
+        //Normal
+        else if(res.data.pokemon[i].pokemon.name === "sentret"){
+          break;
+        }
+        //Poison
+        else if(res.data.pokemon[i].pokemon.name === "spinarak"){
+          break;
+        }
+        //Psychic
+        else if(res.data.pokemon[i].pokemon.name === "natu"){
+          break;
+        }
+        //Rock
+        else if(res.data.pokemon[i].pokemon.name === "sudowoodo"){
+          break;
+        }
+        //Steel
+        else if(res.data.pokemon[i].pokemon.name === "forretress"){
+          break;
+        }
+        //Water
+        else if(res.data.pokemon[i].pokemon.name === "totodile"){
+          break;
+        }
+        else{
+          state.typeArray.push(res.data.pokemon[i].pokemon.name);
+        }
+      }
+      
+      console.log(res.data);
+    });
+  }
+
   AssignTypeImg(){
     let state = this.state;
     for (let i = 0; i < 2; i++) {
@@ -163,11 +248,14 @@ class TypePage extends React.Component {
     console.log(this.state.pName);
     console.log(this.state.pId);
    console.log(this.state.pTypeImgStorage);
+   console.log(this.state.typeArray);
     return (
       <form
         onSubmit={(event) => {
-          this.SearchPokemon(event);
-          this.GetFlavorText(event);
+          event.preventDefault();
+          // this.SearchPokemon(event);
+          // this.GetFlavorText(event);
+          this.DeterminePokemon(event);
         }}
       >
         <Grid item align="center" xs={12}>
@@ -182,7 +270,7 @@ class TypePage extends React.Component {
                 fullWidth
                 variant="outlined"
                 placeholder="type 1"
-                value={this.state.pokeNames}
+                value={this.state.pokemonInfo.type}
                 error={this.state.pokemonInfo.error}
               />
             )}
