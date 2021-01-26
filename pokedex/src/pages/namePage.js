@@ -32,11 +32,28 @@ class PokemonPage extends React.Component {
       pId: "25",
       pAbilities: [],
       pType: [],
-      pTypeImgStorage: ["Bug","Dark","Dragon","Electric","Fairy","Fighting",
-        "Fire","Flying","Ghost","Grass","Ground","Ice","Normal","Poison","Psychic",
-        "Rock","Steel","Water"],
+      pTypeImgStorage: [
+        "Bug",
+        "Dark",
+        "Dragon",
+        "Electric",
+        "Fairy",
+        "Fighting",
+        "Fire",
+        "Flying",
+        "Ghost",
+        "Grass",
+        "Ground",
+        "Ice",
+        "Normal",
+        "Poison",
+        "Psychic",
+        "Rock",
+        "Steel",
+        "Water",
+      ],
       pTypeImg: [],
-      pokeDescription: "",
+      // pokeDescription: "",
       rawData: "",
       pokemonInfo: {
         name: "",
@@ -56,11 +73,9 @@ class PokemonPage extends React.Component {
         id: "",
         ability: "",
         type: "",
-        description: ""
-      }
-      
+        description: "",
+      },
     };
-    let img = "/static/media/WaterType.d28bad78.png";
   }
   componentDidMount() {
     axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
@@ -69,24 +84,24 @@ class PokemonPage extends React.Component {
   }
   GetFlavorText(event) {
     event.preventDefault();
-    let first_call = axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`);
-    let second_call = axios.get(`https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`);
-    axios
-      .all([first_call, second_call])
-      .then(axios.spread((...responses) => {
+    let first_call = axios.get(
+      `https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.number}`
+    );
+    let second_call = axios.get(
+      `https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.number}`
+    );
+    axios.all([first_call, second_call]).then(
+      axios.spread((...responses) => {
         const resp_1 = responses[0];
         const resp_2 = responses[1];
-        console.log("RESPONSE", responses);
         let pokemonData = resp_1.data;
-        let flavorText = resp_2.data.flavor_text_entries.flavor_text;
+        let flavorText = resp_2.data.flavor_text_entries[0].flavor_text;
         let state = this.state;
-        // state.rawData = pokemonData;
-        // state.pokeDescription = flavorText;
-        console.log("FLAVORTEXT", flavorText);
-        this.setState({rawData: pokemonData, pokeDescription: flavorText})
-      }));
+        this.setState({ rawData: pokemonData, pokeDescription: flavorText });
+      })
+    );
   }
-  
+
   updateForm(which, value) {
     let myArray = [];
     let regex = new RegExp(`^${value}`);
@@ -125,44 +140,36 @@ class PokemonPage extends React.Component {
         for (let i = 0; i < response.data.types.length; i++) {
           state.pType.push(response.data.types[i].type.name);
         }
-        
+
         this.setState({
           pName: response.data.species.name,
           pId: response.data.id,
-          labels: {name: "NAME",
-                  id: "ID",
-                  ability: "ABILITIES",
-                  type: "TYPE",
-                  description: "DESCRIPTION"
-                }
-
+          labels: {
+            name: "NAME",
+            id: "ID",
+            ability: "ABILITIES",
+            type: "TYPE",
+            description: "DESCRIPTION",
+          },
         });
-        
       });
-      this.AssignTypeImg();
+    this.AssignTypeImg();
   }
-  AssignTypeImg(){
+  AssignTypeImg() {
     let state = this.state;
     for (let i = 0; i < 2; i++) {
       state.pTypeImg.pop(state.pTypeImg[i]);
     }
-    for(let x = 0;x < state.pType.length; x++){
-      for(let i = 0; i < state.pTypeImg.length; i++){
-        if(state.pType[x] == state.pTypeImgStorage[i]){
+    for (let x = 0; x < state.pType.length; x++) {
+      for (let i = 0; i < state.pTypeImgStorage.length; i++) {
+        if (state.pType[x] == state.pTypeImgStorage[i]) {
           state.pTypeImg.push(state.pTypeImgStorage[i]);
         }
       }
     }
   }
 
-  
-
   render() {
-    console.log(this.state.pType);
-    console.log(this.state.pAbilities);
-    console.log(this.state.pName);
-    console.log(this.state.pId);
-   console.log(this.state.pTypeImgStorage);
     return (
       <form
         onSubmit={(event) => {
@@ -170,13 +177,14 @@ class PokemonPage extends React.Component {
           this.GetFlavorText(event);
         }}
       >
+        <Grid container spacing={3}>
         <Grid item align="center" xs={12}>
           <Autocomplete
             options={this.state.pokeNames}
             getOptionLabel={(option) => option}
             style={{ width: 300 }}
             renderInput={(params) => (
-              <TextField 
+              <TextField
                 id="text"
                 {...params}
                 fullWidth
@@ -199,12 +207,12 @@ class PokemonPage extends React.Component {
           />
         </Grid>
         <Grid item xs={12} align="center">
-          <Button id="text" type="submit" variant="contained">
+          <Button id="colors" type="submit" variant="contained">
             Search
           </Button>
         </Grid>
+        </Grid>
         <div>
-
           <Grid container spacing={3}>
             <Grid item xs={1}></Grid>
             <Grid item xs={5} align="center">
@@ -213,31 +221,31 @@ class PokemonPage extends React.Component {
                 src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`}
               />
             </Grid>
-            
-            <Grid item xs={2} align="center">
+
+            <Grid item xs={6} align="center">
               <h3>{this.state.labels.name}</h3>
               <p>{this.state.pName}</p>
               <h3>{this.state.labels.id}</h3>
               <p>{this.state.pId}</p>
               <h3>{this.state.labels.ability}</h3>
-              
+
               {this.state.pAbilities.map((ability) => (
                 <ul>
-                <li>{ability}</li>
+                  <li>{ability}</li>
                 </ul>
-                ))}
-              
+              ))}
+
               <h3>{this.state.labels.type}</h3>
-                <img src ={this.state.pTypeImg}/>
+              <img src={this.state.pTypeImg} />
               {this.state.pType.map((type) => (
                 <ul>
-                <li>{type}</li>
+                  <li>{type}</li>
                 </ul>
-                ))}
-              
+              ))}
+
               <h3>{this.state.labels.description}</h3>
               <p>{this.state.pokeDescription}</p>
-            </Grid>        
+            </Grid>
           </Grid>
         </div>
       </form>

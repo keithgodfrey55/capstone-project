@@ -9,10 +9,23 @@
     padding: 5px;
     float:left;
 }
+#imgHome{
+    height: auto;
+    width: 70%;
+}
 #text{
-    margin: 2%;
-    outline-color: red;
-    background-color: rgb(252, 17, 17);
-    color: white;
+    margin-bottom: 2%;
+    background-color: rgb(246, 247, 252);
+    color: black;
     box-shadow: 3px 3px rgb(49, 49, 49);
+}
+a:visited{
+    color:rgb(0, 132, 255);
+}
+a:link{
+    color:rgb(0, 132, 255);
+}
+#colors{
+    background-color: darkblue;
+    color:white;
 }

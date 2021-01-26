@@ -199,7 +199,7 @@ class NumberPage extends React.Component {
             />
           </Grid>
           <Grid item xs={12} align="center">
-            <Button id="text" type="submit" variant="contained">
+            <Button id="colors" type="submit" variant="contained">
               Search
             </Button>
           </Grid>

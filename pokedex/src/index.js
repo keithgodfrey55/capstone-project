@@ -24,40 +24,30 @@ ReactDOM.render(
           </Link>
         </Grid>
       </Grid>
-      <div id="home">
-        <nav className="nav_organization">
-          <ul>
-            <li>
-            <Grid item xs={4} align="center">
+      <div>
+        <nav>
+          <Grid container id="textMenu" spacing={2} justify="center">
+            <Grid item xs={12} sm={6} md={3} align="center">
               <Button id="text" variant="contained">
                 <Link to="/">Home</Link>
               </Button>
             </Grid>
-            </li>
-            <li>
-            <Grid item xs={4} align="center">
+            <Grid item xs={12} sm={6} md={3} align="center">
               <Button id="text" variant="contained">
                 <Link to="/pages/numberPage">Search By Pokemon ID #</Link>
               </Button>
             </Grid>
-            </li>
-            <li>
-               <Grid item xs={4} align="center">
+            <Grid item xs={12} sm={6} md={3} align="center">
               <Button id="text" variant="contained">
                 <Link to="/pages/namePage">Search By Pokemon Name</Link>
               </Button>
             </Grid>
-            </li>
-           
-            <li>
-               <Grid item xs={4} align="center">
+            <Grid item xs={12} sm={6} md={3} align="center">
               <Button id="text" variant="contained">
                 <Link to="/pages/typePage">Search By Pokemon Type</Link>
               </Button>
             </Grid>
-            </li>
-           
-            </ul>
+          </Grid>
         </nav>
         <Switch>
           <Route path="/" exact component={Button}>
@@ -74,7 +64,6 @@ ReactDOM.render(
           </Route>
         </Switch>
       </div>
-      <App />
     </Router>
   </React.StrictMode>,
   document.getElementById("root")
