@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "../css/pokePage.css";
 import Bug from "../TypeImages/BugType.png";
@@ -32,8 +33,9 @@ class PokemonPage extends React.Component {
       pId: "25",
       pAbilities: [],
       pType: [],
-      pTypeImgStorage: [Bug,Dark,Dragon,Electric,Fairy,Fighting,
-        Fire,Flying,Ghost,Grass,Ground,Ice,Normal,Poison,Psychic,Rock,Steel,Water],
+      pTypeImgStorage: ["Bug","Dark","Dragon","Electric","Fairy","Fighting",
+        "Fire","Flying","Ghost","Grass","Ground","Ice","Normal","Poison","Psychic",
+        "Rock","Steel","Water"],
       pTypeImg: [],
       pokeDescription: "",
       rawData: "",
@@ -59,13 +61,14 @@ class PokemonPage extends React.Component {
       }
       
     };
+    let img = "/static/media/WaterType.d28bad78.png";
   }
   componentDidMount() {
     axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
       this.setState({ pokemonSpecies: res.data.pokemon_species });
     });
   }
-  GetPokemonNames(event) {
+  GetFlavorText(event) {
     event.preventDefault();
     let first_call = axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`);
     let second_call = axios.get(`https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`);
@@ -137,6 +140,7 @@ class PokemonPage extends React.Component {
         });
         
       });
+      this.AssignTypeImg();
   }
   AssignTypeImg(){
     let state = this.state;
@@ -145,7 +149,7 @@ class PokemonPage extends React.Component {
     }
     for(let x = 0;x < state.pType.length; x++){
       for(let i = 0; i < state.pTypeImg.length; i++){
-        if(state.pType[x] === state.pTypeImgStorage[i]){
+        if(state.pType[x] == state.pTypeImgStorage[i]){
           state.pTypeImg.push(state.pTypeImgStorage[i]);
         }
       }
@@ -159,12 +163,12 @@ class PokemonPage extends React.Component {
     console.log(this.state.pAbilities);
     console.log(this.state.pName);
     console.log(this.state.pId);
-    console.log(this.state.pTypeImg)
+   console.log(this.state.pTypeImgStorage);
     return (
       <form
         onSubmit={(event) => {
           this.SearchPokemon(event);
-          this.GetPokemonNames(event);
+          this.GetFlavorText(event);
         }}
       >
         <Grid item align="center" xs={12}>
@@ -210,6 +214,7 @@ class PokemonPage extends React.Component {
                 src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`}
               />
             </Grid>
+            
             <Grid item xs={2} align="center">
               <h3>{this.state.labels.name}</h3>
               <p>{this.state.pName}</p>
@@ -224,7 +229,7 @@ class PokemonPage extends React.Component {
                 ))}
               
               <h3>{this.state.labels.type}</h3>
-
+                <img src ={this.state.pTypeImg}/>
               {this.state.pType.map((type) => (
                 <ul>
                 <li>{type}</li>
@@ -233,7 +238,7 @@ class PokemonPage extends React.Component {
               
               <h3>{this.state.labels.description}</h3>
               <p>{this.state.pokeDescription}</p>
-            </Grid>         
+            </Grid>        
           </Grid>
         </div>
       </form>
