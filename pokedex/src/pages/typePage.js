@@ -5,6 +5,7 @@ import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "../css/pokePage.css";
+import GetFlavorText from "./namePage"
 import Bug from "../TypeImages/BugType.png";
 import Dark from "../TypeImages/DarkType.png";
 import Dragon from "../TypeImages/DragonType.png";
@@ -25,6 +26,26 @@ import Steel from "../TypeImages/SteelType.png";
 import Water from "../TypeImages/WaterType.png";
 
 class TypePage extends React.Component {
+  type_tag_lookup = {
+    bug: Bug,
+    dark: Dark,
+    dragon: Dragon,
+    electric: Electric,
+    fairy: Fairy,
+    fighting: Fighting,
+    fire: Fire,
+    flying: Flying,
+    ghost: Ghost,
+    grass: Grass,
+    ground: Ground,
+    ice: Ice,
+    normal: Normal,
+    poison: Poison,
+    psychic: Psychic,
+    rock: Rock,
+    steel: Steel,
+    water: Water,
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -32,7 +53,27 @@ class TypePage extends React.Component {
       pId: "25",
       pAbilities: [],
       pType: [],
-      pTypeImgStorage: ["bug","dark","dragon","electric","fairy","fighting",
+      pTypeImgStorage: [
+        Bug,
+        Dark,
+        Dragon,
+        Electric,
+        Fairy,
+        Fighting,
+        Fire,
+        Flying,
+        Ghost,
+        Grass,
+        Ground,
+        Ice,
+        Normal,
+        Poison,
+        Psychic,
+        Rock,
+        Steel,
+        Water,
+      ],
+      pTypeImgStorage2: ["bug","dark","dragon","electric","fairy","fighting",
         "fire","flying","ghost","grass","ground","ice","normal","poison","psychic",
         "rock","steel","water"],
       pTypeImg: [],
@@ -62,32 +103,38 @@ class TypePage extends React.Component {
       typeArray: [],
       
     };
-    let img = "/static/media/WaterType.d28bad78.png";
+    this.randomNumber();
+  }
+  randomNumber(){
+    let state = this.state;
+    let number = Math.floor(Math.random()* 152)+1;
+    state.pId = String(number);
+
   }
   componentDidMount() {
     axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
       this.setState({ pokemonSpecies: res.data.pokemon_species });
     });
   }
-  GetFlavorText(event) {
-    event.preventDefault();
-    let first_call = axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`);
-    let second_call = axios.get(`https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`);
-    axios
-      .all([first_call, second_call])
-      .then(axios.spread((...responses) => {
-        const resp_1 = responses[0];
-        const resp_2 = responses[1];
-        console.log("RESPONSE", responses);
-        let pokemonData = resp_1.data;
-        let flavorText = resp_2.data.flavor_text_entries.flavor_text;
-        let state = this.state;
-        // state.rawData = pokemonData;
-        // state.pokeDescription = flavorText;
-        console.log("FLAVORTEXT", flavorText);
-        this.setState({rawData: pokemonData, pokeDescription: flavorText})
-      }));
-  }
+  // GetFlavorText(event) {
+  //   event.preventDefault();
+  //   let first_call = axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`);
+  //   let second_call = axios.get(`https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`);
+  //   axios
+  //     .all([first_call, second_call])
+  //     .then(axios.spread((...responses) => {
+  //       const resp_1 = responses[0];
+  //       const resp_2 = responses[1];
+  //       console.log("RESPONSE", responses);
+  //       let pokemonData = resp_1.data;
+  //       let flavorText = resp_2.data.flavor_text_entries.flavor_text;
+  //       let state = this.state;
+  //       // state.rawData = pokemonData;
+  //       // state.pokeDescription = flavorText;
+  //       console.log("FLAVORTEXT", flavorText);
+  //       this.setState({rawData: pokemonData, pokeDescription: flavorText})
+  //     }));
+  // }
   
   updateForm(which, value) {
     let myArray = [];
@@ -131,6 +178,7 @@ class TypePage extends React.Component {
         this.setState({
           pName: response.data.species.name,
           pId: response.data.id,
+          pokemonInfo: {id: response.data.id},
           labels: {name: "NAME",
                   id: "ID",
                   ability: "ABILITIES",
@@ -243,18 +291,14 @@ class TypePage extends React.Component {
   
 
   render() {
-    console.log(this.state.pType);
-    console.log(this.state.pAbilities);
-    console.log(this.state.pName);
-    console.log(this.state.pId);
-   console.log(this.state.pTypeImgStorage);
-   console.log(this.state.typeArray);
+    const tagImages = this.state.pTypeImgStorage.map((tag, index) => {
+      return <img id="typeSizing" key={index} src={tag} />;
+    });
     return (
       <form
         onSubmit={(event) => {
-          event.preventDefault();
-          // this.SearchPokemon(event);
-          // this.GetFlavorText(event);
+          this.SearchPokemon(event);
+          GetFlavorText(event);
           this.DeterminePokemon(event);
         }}
       >
@@ -328,27 +372,17 @@ class TypePage extends React.Component {
               />
             </Grid>
             
-            <Grid item xs={2} align="center">
+            <Grid item xs={6} align="center">
               <h3>{this.state.labels.name}</h3>
               <p>{this.state.pName}</p>
               <h3>{this.state.labels.id}</h3>
-              <p>{this.state.pId}</p>
+              <p>{this.state.pokemonInfo.id}</p>
               <h3>{this.state.labels.ability}</h3>
-              
               {this.state.pAbilities.map((ability) => (
-                <ul>
                 <li>{ability}</li>
-                </ul>
-                ))}
-              
+              ))}
               <h3>{this.state.labels.type}</h3>
-                <img src ={this.state.pTypeImg}/>
-              {this.state.pType.map((type) => (
-                <ul>
-                <li>{type}</li>
-                </ul>
-                ))}
-              
+              {tagImages}
               <h3>{this.state.labels.description}</h3>
               <p>{this.state.pokeDescription}</p>
             </Grid>        
