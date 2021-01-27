@@ -1,13 +1,14 @@
-body {
+html {
   
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: linear-gradient(180deg, rgb(0, 132, 255), white);
+  background: linear-gradient(180deg, rgb(0, 132, 255), white);
   border: black solid 2px;
-  min-height: 676px;
+  min-height: 100%;
+  
 }
 
 code {
