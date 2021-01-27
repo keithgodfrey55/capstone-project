@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "../css/pokePage.css";
 import "../css/index.css";
-import GetFlavorText from "./namePage"
+import GetFlavorText from "./namePage";
 import Bug from "../TypeImages/BugType.png";
 import Dark from "../TypeImages/DarkType.png";
 import Dragon from "../TypeImages/DragonType.png";
@@ -53,7 +53,7 @@ class TypePage extends React.Component {
       pName: "",
       pId: "25",
       pAbilities: [],
-      
+
       pType: [],
       pTypeImgStorage: [
         Bug,
@@ -75,9 +75,26 @@ class TypePage extends React.Component {
         Steel,
         Water,
       ],
-      pTypeImgStorage2: ["bug","dark","dragon","electric","fairy","fighting",
-        "fire","flying","ghost","grass","ground","ice","normal","poison","psychic",
-        "rock","steel","water"],
+      pTypeImgStorage2: [
+        "bug",
+        "dark",
+        "dragon",
+        "electric",
+        "fairy",
+        "fighting",
+        "fire",
+        "flying",
+        "ghost",
+        "grass",
+        "ground",
+        "ice",
+        "normal",
+        "poison",
+        "psychic",
+        "rock",
+        "steel",
+        "water",
+      ],
       pTypeImg: [],
       pokeDescription: "",
       rawData: "",
@@ -100,53 +117,35 @@ class TypePage extends React.Component {
         id: "",
         ability: "",
         type: "",
-        description: ""
+        description: "",
       },
       typeArray: [],
-      
+      allPokemonData: [],
     };
     this.randomNumber();
   }
-  randomNumber(){
+  randomNumber() {
     let state = this.state;
-    let number = Math.floor(Math.random()* 152)+1;
+    let number = Math.floor(Math.random() * 152) + 1;
     state.pId = String(number);
-
   }
   componentDidMount() {
     axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
       this.setState({ pokemonSpecies: res.data.pokemon_species });
     });
   }
-  GetFlavorText(event) {
-    event.preventDefault();
-    let first_call = axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`);
-    let second_call = axios.get(`https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`);
-    axios
-      .all([first_call, second_call])
-      .then(axios.spread((...responses) => {
-        const resp_1 = responses[0];
-        const resp_2 = responses[1];
-        let pokemonData = resp_1.data;
-        let flavorText = resp_2.data.flavor_text_entries[1].flavor_text;
-        this.setState({rawData: pokemonData, pokeDescription: flavorText})
-      }));
-  }
-  
+
   updateForm(which, value) {
     let myArray = [];
     let regex = new RegExp(`^${value}`);
-    if(value !== ""){
+    if (value !== "") {
       for (let x = 0; x < this.state.pokemonSpecies.length; x++) {
         if (regex.exec(this.state.pTypeImgStorage2[x])) {
           myArray.push(this.state.pTypeImgStorage2[x]);
         }
       }
     }
-    
-    console.log(myArray, this.state.pTypeImgStorage2)
     this.setState({ pokeNames: myArray });
-    console.log(this.state.pokeNames);
     this.setState({
       [which]: {
         type: value,
@@ -158,235 +157,218 @@ class TypePage extends React.Component {
   SearchPokemon(event) {
     event.preventDefault();
     let state = this.state;
-    axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`)
-      .then((response) => {
-        console.log(response);
+    for (let z = 0; z < this.state.typeArray.length; z++) {
+      let first_call = axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${this.state.typeArray[z]}`
+      );
+      let second_call = axios.get(
+        `https://pokeapi.co/api/v2/pokemon-species/${this.state.typeArray[z]}`
+      );
+      axios.all([first_call, second_call]).then(
+        axios.spread((...responses) => {
+          const response1 = responses[0];
+          const response2 = responses[1];
+          const pokemondata = {
+            name: response1.data.species.name,
+            id: response1.data.id,
+            type: [],
+            abilities: [],
+            flavorText: response2.data.flavor_text_entries[1].flavor_text,
+          };
+          for (let x = 0; x < response1.data.abilities.length; x++) {
+            pokemondata.abilities.push(
+              response1.data.abilities[x].ability.name
+            );
+          }
+          for (let i = 0; i < response1.data.types.length; i++) {
+            pokemondata.type.push(response1.data.types[i].type.name);
+          }
+          state.allPokemonData.push(pokemondata);
+        })
+      );
+    }
 
-        for (let x = 0; x < 3; x++) {
-          state.pAbilities.pop(state.pAbilities[x]);
-        }
-        for (let i = 0; i < 2; i++) {
-          state.pType.pop(state.pType[i]);
-        }
-        for (let x = 0; x < response.data.abilities.length; x++) {
-          state.pAbilities.push(response.data.abilities[x].ability.name);
-        }
-        for (let i = 0; i < response.data.types.length; i++) {
-          state.pType.push(response.data.types[i].type.name);
-        }
-        
-        this.setState({
-          pName: response.data.species.name,
-          pId: response.data.id,
-          pokemonInfo: {id: response.data.id},
-          labels: {name: "NAME",
-                  id: "ID",
-                  ability: "ABILITIES",
-                  type: "TYPE",
-                  description: "DESCRIPTION"
-                },
-          pTypeImgStorage: state.pTypeImg
-        });
-        
-      });
+    this.setState({
+      labels: {
+        name: "NAME",
+        id: "ID",
+        ability: "ABILITIES",
+        type: "TYPE",
+        description: "DESCRIPTION",
+      },
+      allPokemonData: state.allPokemonData,
+      pTypeImgStorage: state.pTypeImg,
+    });
   }
   DeterminePokemon(event) {
     event.preventDefault();
     let state = this.state;
-    axios.get(`https://pokeapi.co/api/v2/type/${this.state.pokemonInfo.type}/`).then((res) => {
-      
-      for(let i=0; i<res.data.pokemon.length; i++) {
-        //Bug
-        if(res.data.pokemon[i].pokemon.name === "ledyba") {
-          break;
+
+    axios
+      .get(`https://pokeapi.co/api/v2/type/${this.state.pokemonInfo.type}/`)
+      .then((res) => {
+        for (let i = 0; i < res.data.pokemon.length; i++) {
+          //Bug
+          if (res.data.pokemon[i].pokemon.name === "ledyba") {
+            break;
+          }
+          //Dragon
+          else if (res.data.pokemon[i].pokemon.name === "kingdra") {
+            break;
+          }
+          //Electric
+          else if (res.data.pokemon[i].pokemon.name === "chinchou") {
+            break;
+          }
+          //Fairy
+          else if (res.data.pokemon[i].pokemon.name === "cleffa") {
+            break;
+          }
+          //Fighting
+          else if (res.data.pokemon[i].pokemon.name === "heracross") {
+            break;
+          }
+          //Fire
+          else if (res.data.pokemon[i].pokemon.name === "cyndaquil") {
+            break;
+          }
+          //Flying
+          else if (res.data.pokemon[i].pokemon.name === "hoothoot") {
+            break;
+          }
+          //Ghost
+          else if (res.data.pokemon[i].pokemon.name === "misdreavus") {
+            break;
+          }
+          //Grass
+          else if (res.data.pokemon[i].pokemon.name === "chikorita") {
+            break;
+          }
+          //Ground
+          else if (res.data.pokemon[i].pokemon.name === "wooper") {
+            break;
+          }
+          //Ice
+          else if (res.data.pokemon[i].pokemon.name === "sneasel") {
+            break;
+          }
+          //Normal
+          else if (res.data.pokemon[i].pokemon.name === "sentret") {
+            break;
+          }
+          //Poison
+          else if (res.data.pokemon[i].pokemon.name === "spinarak") {
+            break;
+          }
+          //Psychic
+          else if (res.data.pokemon[i].pokemon.name === "natu") {
+            break;
+          }
+          //Rock
+          else if (res.data.pokemon[i].pokemon.name === "sudowoodo") {
+            break;
+          }
+          //Steel
+          else if (res.data.pokemon[i].pokemon.name === "forretress") {
+            break;
+          }
+          //Water
+          else if (res.data.pokemon[i].pokemon.name === "totodile") {
+            break;
+          } else {
+            state.typeArray.push(res.data.pokemon[i].pokemon.name);
+          }
         }
-        //Dragon
-        else if(res.data.pokemon[i].pokemon.name === "kingdra"){
-          break;
-        }
-        //Electric
-        else if(res.data.pokemon[i].pokemon.name === "chinchou"){
-          break;
-        }
-        //Fairy
-        else if(res.data.pokemon[i].pokemon.name === "cleffa"){
-          break;
-        }
-        //Fighting
-        else if(res.data.pokemon[i].pokemon.name === "heracross"){
-          break;
-        }
-        //Fire
-        else if(res.data.pokemon[i].pokemon.name === "cyndaquil"){
-          break;
-        }
-        //Flying
-        else if(res.data.pokemon[i].pokemon.name === "hoothoot"){
-          break;
-        }
-        //Ghost
-        else if(res.data.pokemon[i].pokemon.name === "misdreavus"){
-          break;
-        }
-        //Grass
-        else if(res.data.pokemon[i].pokemon.name === "chikorita"){
-          break;
-        }
-        //Ground
-        else if(res.data.pokemon[i].pokemon.name === "wooper"){
-          break;
-        }
-        //Ice
-        else if(res.data.pokemon[i].pokemon.name === "sneasel"){
-          break;
-        }
-        //Normal
-        else if(res.data.pokemon[i].pokemon.name === "sentret"){
-          break;
-        }
-        //Poison
-        else if(res.data.pokemon[i].pokemon.name === "spinarak"){
-          break;
-        }
-        //Psychic
-        else if(res.data.pokemon[i].pokemon.name === "natu"){
-          break;
-        }
-        //Rock
-        else if(res.data.pokemon[i].pokemon.name === "sudowoodo"){
-          break;
-        }
-        //Steel
-        else if(res.data.pokemon[i].pokemon.name === "forretress"){
-          break;
-        }
-        //Water
-        else if(res.data.pokemon[i].pokemon.name === "totodile"){
-          break;
-        }
-        else{
-          state.typeArray.push(res.data.pokemon[i].pokemon.name);
-        }
-      }
-      
-      console.log(res.data);
-    });
+        this.setState(state);
+        
+      });
   }
 
   render() {
     const tagImages = this.state.pTypeImgStorage.map((tag, index) => {
       return <img id="typeSizing" key={index} src={tag} />;
-      
     });
-    console.log(this.state.pokeNames);
-    return (<div>
-      <form
-        onSubmit={(event) => {
-          this.DeterminePokemon(event);
-
-        }}
-      >
-        <Grid item align="center" xs={12}>
-          <Autocomplete
-            options={this.state.pokeNames}
-            getOptionLabel={(option) => option}
-            style={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField 
-                id="text"
-                {...params}
-                fullWidth
-                variant="outlined"
-                placeholder="search by type"
-                value={this.state.pokemonInfo.type}
-                error={this.state.pokemonInfo.error}
-              />
-            )}
-            onInputChange={(event, value) => {
-              if (event.type === "change") {
-                // user has typed in
-                this.updateForm("pokemonInfo", event.target.value);
-              }
-              if (event.type === "click") {
-                // user has clicked
-                this.updateForm("pokemonInfo", value);
-              }
-            }}
-          />
+    console.log(this.state.allPokemonData);
+    return (
+      <div>
+        <form
+          onSubmit={(event) => {
+            this.DeterminePokemon(event);
+            this.SearchPokemon(event);
+          }}
+        >
+          <Grid item align="center" xs={12}>
+            <Autocomplete
+              options={this.state.pokeNames}
+              getOptionLabel={(option) => option}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  id="text"
+                  {...params}
+                  fullWidth
+                  variant="outlined"
+                  placeholder="search by type"
+                  value={this.state.pokemonInfo.type}
+                  error={this.state.pokemonInfo.error}
+                />
+              )}
+              onInputChange={(event, value) => {
+                if (event.type === "change") {
+                  // user has typed in
+                  this.updateForm("pokemonInfo", event.target.value);
+                }
+                if (event.type === "click") {
+                  // user has clicked
+                  this.updateForm("pokemonInfo", value);
+                }
+              }}
+            />
           </Grid>
           <Grid item xs={12} align="center">
-          <Button id="text" type="submit" variant="contained">
-            Search
-          </Button>
-        </Grid>
-          </form>
-          <form onSubmit={(event) => {
-          this.SearchPokemon(event);
-          this.GetFlavorText(event);
-        }}>
-          <Grid item align="center" xs={12}>
-          <Autocomplete
-            options={this.state.typeArray}
-            getOptionLabel={(option) => option}
-            style={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField 
-                id="text"
-                {...params}
-                fullWidth
-                variant="outlined"
-                placeholder="search pokemon with given type"
-                value={this.state.pokeNames}
-                error={this.state.pokemonInfo.error}
-              />
-            )}
-            onInputChange={(event, value) => {
-              if (event.type === "change") {
-                // user has typed in
-                this.updateForm("pokemonInfo", event.target.value);
-              }
-              if (event.type === "click") {
-                // user has clicked
-                this.updateForm("pokemonInfo", value);
-              }
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Button id="text" type="submit" variant="contained">
-            Search
-          </Button>
-        </Grid>
-        </form>
-        <div>
-
-          <Grid container spacing={3}>
-            <Grid item xs={1}></Grid>
-            <Grid item xs={5} align="center">
-              <img
-                id="img"
-                src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`}
-              />
-            </Grid>
-            
-            <Grid item xs={6} align="center">
-              <h3>{this.state.labels.name}</h3>
-              <p>{this.state.pName}</p>
-              <h3>{this.state.labels.id}</h3>
-              <p>{this.state.pokemonInfo.id}</p>
-              <h3>{this.state.labels.ability}</h3>
-              {this.state.pAbilities.map((ability) => (
-                <li>{ability}</li>
-              ))}
-              <h3>{this.state.labels.type}</h3>
-              {tagImages}
-              <h3>{this.state.labels.description}</h3>
-              <p>{this.state.pokeDescription}</p>
-            </Grid>        
+            <Button id="text" type="submit" variant="contained">
+              Search
+            </Button>
           </Grid>
-        </div>
-        </div> 
+          {/* {this.state.allPokemonData.map((pokemondata,index) =>(
+              <li> <Grid container spacing={3}>
+              <Grid item xs={1}></Grid>
+              <Grid item xs={5} align="center">
+                <img
+                  id="img"
+                  src={`https://pokeres.bastionbot.org/images/pokemon/${pokemondata.id}.png`}
+                />
+              </Grid>
+              </Grid>
+              </li>
+            ))} */}
+          {this.state.allPokemonData.map((pokemondata, index) => (
+              <Grid container spacing={3}>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={5} align="center">
+                  <img
+                    id="img"
+                    src={`https://pokeres.bastionbot.org/images/pokemon/${pokemondata.id}.png`}
+                  />
+                </Grid>
+                <Grid item xs={6} align="center">
+                  <h3>{this.state.labels.name}</h3>
+                  <p>{pokemondata.name}</p>
+                  <h3>{this.state.labels.id}</h3>
+                  <p>{pokemondata.id}</p>
+                  <h3>{this.state.labels.ability}</h3>
+                  {pokemondata.abilities.map((ability) => (
+                    <li>{ability}</li>
+                  ))}
+                  <h3>{this.state.labels.type}</h3>
+                  {tagImages}
+                  <h3>{this.state.labels.description}</h3>
+                  <p>{pokemondata.flavorText}</p>
+                </Grid>
+              </Grid>
+          ))}
+        </form>
+      </div>
     );
   }
 }
