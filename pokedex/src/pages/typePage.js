@@ -5,6 +5,7 @@ import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "../css/pokePage.css";
+import "../css/index.css";
 import GetFlavorText from "./namePage"
 import Bug from "../TypeImages/BugType.png";
 import Dark from "../TypeImages/DarkType.png";
@@ -191,7 +192,7 @@ class TypePage extends React.Component {
       });
   }
   DeterminePokemon(event) {
-    
+    event.preventDefault();
     let state = this.state;
     axios.get(`https://pokeapi.co/api/v2/type/${this.state.pokemonInfo.type}/`).then((res) => {
       
@@ -279,15 +280,11 @@ class TypePage extends React.Component {
       
     });
     console.log(this.state.pokeNames);
-    return (
+    return (<div>
       <form
         onSubmit={(event) => {
-          // this.SearchPokemon(event);
-          // GetFlavorText(event);
           this.DeterminePokemon(event);
-          this.SearchPokemon(event);
-          this.GetFlavorText(event);
-          
+
         }}
       >
         <Grid item align="center" xs={12}>
@@ -317,6 +314,18 @@ class TypePage extends React.Component {
               }
             }}
           />
+          </Grid>
+          <Grid item xs={12} align="center">
+          <Button id="text" type="submit" variant="contained">
+            Search
+          </Button>
+        </Grid>
+          </form>
+          <form onSubmit={(event) => {
+          this.SearchPokemon(event);
+          this.GetFlavorText(event);
+        }}>
+          <Grid item align="center" xs={12}>
           <Autocomplete
             options={this.state.typeArray}
             getOptionLabel={(option) => option}
@@ -349,6 +358,7 @@ class TypePage extends React.Component {
             Search
           </Button>
         </Grid>
+        </form>
         <div>
 
           <Grid container spacing={3}>
@@ -376,7 +386,7 @@ class TypePage extends React.Component {
             </Grid>        
           </Grid>
         </div>
-      </form>
+        </div> 
     );
   }
 }
