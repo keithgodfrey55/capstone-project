@@ -135,11 +135,15 @@ class TypePage extends React.Component {
   updateForm(which, value) {
     let myArray = [];
     let regex = new RegExp(`^${value}`);
-    for (let x = 0; x < this.state.pokemonSpecies.length; x++) {
-      if (regex.exec(this.state.pTypeImgStorage2[x])) {
-        myArray.push(this.state.pTypeImgStorage2[x]);
+    if(value !== ""){
+      for (let x = 0; x < this.state.pokemonSpecies.length; x++) {
+        if (regex.exec(this.state.pTypeImgStorage2[x])) {
+          myArray.push(this.state.pTypeImgStorage2[x]);
+        }
       }
     }
+    
+    console.log(myArray, this.state.pTypeImgStorage2)
     this.setState({ pokeNames: myArray });
     console.log(this.state.pokeNames);
     this.setState({
@@ -272,7 +276,9 @@ class TypePage extends React.Component {
   render() {
     const tagImages = this.state.pTypeImgStorage.map((tag, index) => {
       return <img id="typeSizing" key={index} src={tag} />;
+      
     });
+    console.log(this.state.pokeNames);
     return (
       <form
         onSubmit={(event) => {
