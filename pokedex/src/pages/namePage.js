@@ -5,6 +5,7 @@ import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "../css/pokePage.css";
+import "../css/index.css";
 import Bug from "../TypeImages/BugType.png";
 import Dark from "../TypeImages/DarkType.png";
 import Dragon from "../TypeImages/DragonType.png";
