@@ -11,7 +11,7 @@
 }
 #imgHome{
     height: auto;
-    width: 70%;
+    width: 53%;
 }
 #text{
     margin-bottom: 2%;
@@ -28,4 +28,11 @@ a:link{
 #colors{
     background-color: darkblue;
     color:white;
+}
+#typeSizing{
+    height: auto;
+    width: 30%;
+}
+li{
+    list-style-type: none;
 }

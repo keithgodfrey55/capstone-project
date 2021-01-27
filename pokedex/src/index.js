@@ -27,22 +27,22 @@ ReactDOM.render(
       <div>
         <nav>
           <Grid container id="textMenu" spacing={2} justify="center">
-            <Grid item xs={12} sm={6} md={3} align="center">
+            {/* <Grid item xs={12} sm={6} md={3} lg={3} align="center">
               <Button id="text" variant="contained">
                 <Link to="/">Home</Link>
               </Button>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3} align="center">
+            </Grid> */}
+            <Grid item xs={12} sm={6} md={4} lg={4} align="center">
               <Button id="text" variant="contained">
                 <Link to="/pages/numberPage">Search By Pokemon ID #</Link>
               </Button>
             </Grid>
-            <Grid item xs={12} sm={6} md={3} align="center">
+            <Grid item xs={12} sm={6} md={4} lg={4} align="center">
               <Button id="text" variant="contained">
                 <Link to="/pages/namePage">Search By Pokemon Name</Link>
               </Button>
             </Grid>
-            <Grid item xs={12} sm={6} md={3} align="center">
+            <Grid item xs={12} sm={12} md={4} lg={4} align="center">
               <Button id="text" variant="contained">
                 <Link to="/pages/typePage">Search By Pokemon Type</Link>
               </Button>

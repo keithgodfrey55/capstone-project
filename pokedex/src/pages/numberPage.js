@@ -25,11 +25,31 @@ import Steel from "../TypeImages/SteelType.png";
 import Water from "../TypeImages/WaterType.png";
 
 class NumberPage extends React.Component {
+  type_tag_lookup = {
+    bug: Bug,
+    dark: Dark,
+    dragon: Dragon,
+    electric: Electric,
+    fairy: Fairy,
+    fighting: Fighting,
+    fire: Fire,
+    flying: Flying,
+    ghost: Ghost,
+    grass: Grass,
+    ground: Ground,
+    ice: Ice,
+    normal: Normal,
+    poison: Poison,
+    psychic: Psychic,
+    rock: Rock,
+    steel: Steel,
+    water: Water
+  }
   constructor(props) {
     super(props);
     this.state = {
       pName: "",
-      pId: "25",
+      pId: "6",
       pAbilities: [],
       pType: [],
       pTypeImgStorage: [
@@ -75,6 +95,7 @@ class NumberPage extends React.Component {
       },
     };
     this.PokeNumArray();
+    this.randomNumber()
   }
   PokeNumArray() {
     let state = this.state;
@@ -82,7 +103,12 @@ class NumberPage extends React.Component {
       state.pokeNumber.push(String(x));
     }
   }
+  randomNumber(){
+    let state = this.state;
+    let number = Math.floor(Math.random()* 152)+1;
+    state.pId = String(number);
 
+  }
   componentDidMount() {
     axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
       this.setState({ pokemonSpecies: res.data.pokemon_species });
@@ -101,8 +127,7 @@ class NumberPage extends React.Component {
         const resp_1 = responses[0];
         const resp_2 = responses[1];
         let pokemonData = resp_1.data;
-        let flavorText = resp_2.data.flavor_text_entries[0].flavor_text;
-        let state = this.state;
+        let flavorText = resp_2.data.flavor_text_entries[1].flavor_text;
         this.setState({ rawData: pokemonData, pokeDescription: flavorText });
       })
     );
@@ -113,8 +138,6 @@ class NumberPage extends React.Component {
     axios
       .get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.number}`)
       .then((response) => {
-        console.log(response);
-
         for (let x = 0; x < 3; x++) {
           state.pAbilities.pop(state.pAbilities[x]);
         }
@@ -128,19 +151,28 @@ class NumberPage extends React.Component {
           state.pType.push(response.data.types[i].type.name);
         }
 
+        state.pTypeImg = [];
+        
+        for(let x = 0; x < state.pType.length; x++){    
+              if(this.type_tag_lookup[state.pType[x]]){
+                state.pTypeImg.push(this.type_tag_lookup[state.pType[x]]);
+              }
+        }
         this.setState({
           pName: response.data.species.name,
           pId: response.data.id,
-          labels: {
-            name: "NAME",
-            id: "ID",
-            ability: "ABILITIES",
-            type: "TYPE",
-            description: "DESCRIPTION",
-          },
+          pokemonInfo: {id: response.data.id},
+          labels: {name: "NAME",
+                  id: "ID",
+                  ability: "ABILITIES",
+                  type: "TYPE",
+                  description: "DESCRIPTION"
+                },
+          pTypeImgStorage: state.pTypeImg
+
         });
       });
-    // this.AssignTypeImg();
+
   }
   updateForm(which, value) {
     let myArray = [];
@@ -160,8 +192,9 @@ class NumberPage extends React.Component {
     });
   }
   render() {
-    console.log(this.state.pokeNumber);
-
+    const tagImages = this.state.pTypeImgStorage.map((tag, index) => {
+      return <img id="typeSizing" key={index} src={tag} />;
+    })
     return (
       <form
         onSubmit={(event) => {
@@ -215,27 +248,17 @@ class NumberPage extends React.Component {
               />
             </Grid>
 
-            <Grid item xs={2} align="center">
+            <Grid item xs={6} align="center">
               <h3>{this.state.labels.name}</h3>
               <p>{this.state.pName}</p>
               <h3>{this.state.labels.id}</h3>
-              <p>{this.state.pId}</p>
+              <p>{this.state.pokemonInfo.id}</p>
               <h3>{this.state.labels.ability}</h3>
-
               {this.state.pAbilities.map((ability) => (
-                <ul>
                   <li>{ability}</li>
-                </ul>
               ))}
-
               <h3>{this.state.labels.type}</h3>
-              <img src={this.state.pTypeImg} />
-              {this.state.pType.map((type) => (
-                <ul>
-                  <li>{type}</li>
-                </ul>
-              ))}
-
+                {tagImages}
               <h3>{this.state.labels.description}</h3>
               <p>{this.state.pokeDescription}</p>
             </Grid>

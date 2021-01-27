@@ -43,26 +43,44 @@ class PokemonPage extends React.Component {
     psychic: Psychic,
     rock: Rock,
     steel: Steel,
-    water: Water
-  }
+    water: Water,
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       pName: "",
-      pId: "",
+      pId: "25" ,
       pAbilities: [],
       pType: [],
-      pTypeImgStorage: [Bug,Dark,Dragon,Electric,Fairy,Fighting,
-        Fire,Flying,Ghost,Grass,Ground,Ice,Normal,Poison,Psychic,
-        Rock,Steel,Water],
+      pTypeImgStorage: [
+        Bug,
+        Dark,
+        Dragon,
+        Electric,
+        Fairy,
+        Fighting,
+        Fire,
+        Flying,
+        Ghost,
+        Grass,
+        Ground,
+        Ice,
+        Normal,
+        Poison,
+        Psychic,
+        Rock,
+        Steel,
+        Water,
+      ],
       pTypeImg: [],
-      // pokeDescription: "",
+      pokeDescription: "",
       rawData: "",
       pokemonInfo: {
         name: "",
         number: "",
         error: "",
+        id: ""
       },
       pokemonSpecies: [
         {
@@ -80,7 +98,17 @@ class PokemonPage extends React.Component {
         description: "",
       },
     };
+    this.randomNumber();
   }
+  randomNumber(){
+    let state = this.state;
+    let number = Math.floor(Math.random()* 152)+1;
+    state.pId = String(number);
+
+  }
+  // startImage(){
+  //   let url = "https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.pngall.com%2Fpokeball-png&psig=AOvVaw2bsigbrqPr69PfCu7AkqCm&ust=1611799590387000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPjjycKDu-4CFQAAAAAdAAAAABAD";
+  // }
   componentDidMount() {
     axios.get(`https://pokeapi.co/api/v2/generation/1/`).then((res) => {
       this.setState({ pokemonSpecies: res.data.pokemon_species });
@@ -89,19 +117,20 @@ class PokemonPage extends React.Component {
   GetFlavorText(event) {
     event.preventDefault();
     let first_call = axios.get(
-      `https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.number}`
+      `https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`
     );
     let second_call = axios.get(
-      `https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.number}`
+      `https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`
     );
     axios.all([first_call, second_call]).then(
       axios.spread((...responses) => {
         const resp_1 = responses[0];
         const resp_2 = responses[1];
         let pokemonData = resp_1.data;
-        let flavorText = resp_2.data.flavor_text_entries[0].flavor_text;
-        this.setState({rawData: pokemonData, pokeDescription: flavorText})
-      }));
+        let flavorText = resp_2.data.flavor_text_entries[1].flavor_text;
+        this.setState({ rawData: pokemonData, pokeDescription: flavorText });
+      })
+    );
   }
 
   updateForm(which, value) {
@@ -144,36 +173,36 @@ class PokemonPage extends React.Component {
         }
 
         state.pTypeImg = [];
-        
-        for(let x = 0; x < state.pType.length; x++){    
-            //if(state.pType[x] == state.pTypeImgStorage[j]){
-              if(this.type_tag_lookup[state.pType[x]]){
-                state.pTypeImg.push(this.type_tag_lookup[state.pType[x]]);
-              }
-              
-            //}
+
+        for (let x = 0; x < state.pType.length; x++) {
+          //if(state.pType[x] == state.pTypeImgStorage[j]){
+          if (this.type_tag_lookup[state.pType[x]]) {
+            state.pTypeImg.push(this.type_tag_lookup[state.pType[x]]);
+          }
+
+          //}
         }
         this.setState({
           pName: response.data.species.name,
           pId: response.data.id,
-          labels: {name: "NAME",
-                  id: "ID",
-                  ability: "ABILITIES",
-                  type: "TYPE",
-                  description: "DESCRIPTION"
-                },
-          pTypeImgStorage: state.pTypeImg
-
+          pokemonInfo: {id: response.data.id},
+          labels: {
+            name: "NAME",
+            id: "ID",
+            ability: "ABILITIES",
+            type: "TYPE",
+            description: "DESCRIPTION",
+          },
+          pTypeImgStorage: state.pTypeImg,
         });
       });
-
   }
 
   render() {
     const tagImages = this.state.pTypeImgStorage.map((tag, index) => {
-      return <img key={index} src={tag} />;
-    })
-   return (
+      return <img id="typeSizing" key={index} src={tag} />;
+    });
+    return (
       <form
         onSubmit={(event) => {
           this.SearchPokemon(event);
@@ -181,39 +210,39 @@ class PokemonPage extends React.Component {
         }}
       >
         <Grid container spacing={3}>
-        <Grid item align="center" xs={12}>
-          <Autocomplete
-            options={this.state.pokeNames}
-            getOptionLabel={(option) => option}
-            style={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField
-                id="text"
-                {...params}
-                fullWidth
-                variant="outlined"
-                placeholder="search by name"
-                value={this.state.pokeNames}
-                error={this.state.pokemonInfo.error}
-              />
-            )}
-            onInputChange={(event, value) => {
-              if (event.type === "change") {
-                // user has typed in
-                this.updateForm("pokemonInfo", event.target.value);
-              }
-              if (event.type === "click") {
-                // user has clicked
-                this.updateForm("pokemonInfo", value);
-              }
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Button id="colors" type="submit" variant="contained">
-            Search
-          </Button>
-        </Grid>
+          <Grid item align="center" xs={12}>
+            <Autocomplete
+              options={this.state.pokeNames}
+              getOptionLabel={(option) => option}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  id="text"
+                  {...params}
+                  fullWidth
+                  variant="outlined"
+                  placeholder="search by name"
+                  value={this.state.pokeNames}
+                  error={this.state.pokemonInfo.error}
+                />
+              )}
+              onInputChange={(event, value) => {
+                if (event.type === "change") {
+                  // user has typed in
+                  this.updateForm("pokemonInfo", event.target.value);
+                }
+                if (event.type === "click") {
+                  // user has clicked
+                  this.updateForm("pokemonInfo", value);
+                }
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} align="center">
+            <Button id="colors" type="submit" variant="contained">
+              Search
+            </Button>
+          </Grid>
         </Grid>
         <div>
           <Grid container spacing={3}>
@@ -221,7 +250,7 @@ class PokemonPage extends React.Component {
             <Grid item xs={5} align="center">
               <img
                 id="img"
-                src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`}
+                src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`} alt="pokemon"
               />
             </Grid>
 
@@ -229,17 +258,13 @@ class PokemonPage extends React.Component {
               <h3>{this.state.labels.name}</h3>
               <p>{this.state.pName}</p>
               <h3>{this.state.labels.id}</h3>
-              <p>{this.state.pId}</p>
-              <h3>{this.state.labels.ability}</h3>             
+              <p>{this.state.pokemonInfo.id}</p>
+              <h3>{this.state.labels.ability}</h3>
               {this.state.pAbilities.map((ability) => (
-                <ul>
-                  <li>{ability}</li>
-                </ul>
+                <li>{ability}</li>
               ))}
-
               <h3>{this.state.labels.type}</h3>
-                  {tagImages}
-              
+              {tagImages}
               <h3>{this.state.labels.description}</h3>
               <p>{this.state.pokeDescription}</p>
             </Grid>
