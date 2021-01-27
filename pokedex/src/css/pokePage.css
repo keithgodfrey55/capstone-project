@@ -12,6 +12,7 @@
 #imgHome{
     height: auto;
     width: 53%;
+    max-width: 440px;
 }
 #text{
     margin-bottom: 2%;
