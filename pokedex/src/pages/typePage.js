@@ -52,6 +52,7 @@ class TypePage extends React.Component {
       pName: "",
       pId: "25",
       pAbilities: [],
+      
       pType: [],
       pTypeImgStorage: [
         Bug,
@@ -116,32 +117,27 @@ class TypePage extends React.Component {
       this.setState({ pokemonSpecies: res.data.pokemon_species });
     });
   }
-  // GetFlavorText(event) {
-  //   event.preventDefault();
-  //   let first_call = axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`);
-  //   let second_call = axios.get(`https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`);
-  //   axios
-  //     .all([first_call, second_call])
-  //     .then(axios.spread((...responses) => {
-  //       const resp_1 = responses[0];
-  //       const resp_2 = responses[1];
-  //       console.log("RESPONSE", responses);
-  //       let pokemonData = resp_1.data;
-  //       let flavorText = resp_2.data.flavor_text_entries.flavor_text;
-  //       let state = this.state;
-  //       // state.rawData = pokemonData;
-  //       // state.pokeDescription = flavorText;
-  //       console.log("FLAVORTEXT", flavorText);
-  //       this.setState({rawData: pokemonData, pokeDescription: flavorText})
-  //     }));
-  // }
+  GetFlavorText(event) {
+    event.preventDefault();
+    let first_call = axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonInfo.name}`);
+    let second_call = axios.get(`https://pokeapi.co/api/v2/pokemon-species/${this.state.pokemonInfo.name}`);
+    axios
+      .all([first_call, second_call])
+      .then(axios.spread((...responses) => {
+        const resp_1 = responses[0];
+        const resp_2 = responses[1];
+        let pokemonData = resp_1.data;
+        let flavorText = resp_2.data.flavor_text_entries[1].flavor_text;
+        this.setState({rawData: pokemonData, pokeDescription: flavorText})
+      }));
+  }
   
   updateForm(which, value) {
     let myArray = [];
     let regex = new RegExp(`^${value}`);
     for (let x = 0; x < this.state.pokemonSpecies.length; x++) {
-      if (regex.exec(this.state.pTypeImgStorage[x])) {
-        myArray.push(this.state.pTypeImgStorage[x]);
+      if (regex.exec(this.state.pTypeImgStorage2[x])) {
+        myArray.push(this.state.pTypeImgStorage2[x]);
       }
     }
     this.setState({ pokeNames: myArray });
@@ -184,8 +180,8 @@ class TypePage extends React.Component {
                   ability: "ABILITIES",
                   type: "TYPE",
                   description: "DESCRIPTION"
-                }
-
+                },
+          pTypeImgStorage: state.pTypeImg
         });
         
       });
@@ -193,7 +189,6 @@ class TypePage extends React.Component {
   DeterminePokemon(event) {
     
     let state = this.state;
-    let myArray = [];
     axios.get(`https://pokeapi.co/api/v2/type/${this.state.pokemonInfo.type}/`).then((res) => {
       
       for(let i=0; i<res.data.pokemon.length; i++) {
@@ -274,22 +269,6 @@ class TypePage extends React.Component {
     });
   }
 
-  AssignTypeImg(){
-    let state = this.state;
-    for (let i = 0; i < 2; i++) {
-      state.pTypeImg.pop(state.pTypeImg[i]);
-    }
-    for(let x = 0;x < state.pType.length; x++){
-      for(let i = 0; i < state.pTypeImg.length; i++){
-        if(state.pType[x] == state.pTypeImgStorage[i]){
-          state.pTypeImg.push(state.pTypeImgStorage[i]);
-        }
-      }
-    }
-  }
-
-  
-
   render() {
     const tagImages = this.state.pTypeImgStorage.map((tag, index) => {
       return <img id="typeSizing" key={index} src={tag} />;
@@ -297,9 +276,12 @@ class TypePage extends React.Component {
     return (
       <form
         onSubmit={(event) => {
-          this.SearchPokemon(event);
-          GetFlavorText(event);
+          // this.SearchPokemon(event);
+          // GetFlavorText(event);
           this.DeterminePokemon(event);
+          this.SearchPokemon(event);
+          this.GetFlavorText(event);
+          
         }}
       >
         <Grid item align="center" xs={12}>
@@ -313,7 +295,7 @@ class TypePage extends React.Component {
                 {...params}
                 fullWidth
                 variant="outlined"
-                placeholder="type 1"
+                placeholder="search by type"
                 value={this.state.pokemonInfo.type}
                 error={this.state.pokemonInfo.error}
               />
@@ -330,7 +312,7 @@ class TypePage extends React.Component {
             }}
           />
           <Autocomplete
-            options={this.state.pokeNames}
+            options={this.state.typeArray}
             getOptionLabel={(option) => option}
             style={{ width: 300 }}
             renderInput={(params) => (
@@ -339,7 +321,7 @@ class TypePage extends React.Component {
                 {...params}
                 fullWidth
                 variant="outlined"
-                placeholder="type 2"
+                placeholder="search pokemon with given type"
                 value={this.state.pokeNames}
                 error={this.state.pokemonInfo.error}
               />
