@@ -26,7 +26,7 @@ class App extends React.Component {
     <div>
       <Grid container>
         <Grid item xs={12} align="center">
-          <Typography variant="h2">Welcome!</Typography>
+          <Typography variant="h2">I Choose YOU!</Typography>
         </Grid>
         <Grid item xs={12} align="center"><img
                 id="imgHome"
