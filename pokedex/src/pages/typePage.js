@@ -181,8 +181,9 @@ class TypePage extends React.Component {
               response1.data.abilities[x].ability.name
             );
           }
+          state.pTypeImg.splice(0, state.pTypeImg.length);
           for (let i = 0; i < response1.data.types.length; i++) {
-            pokemondata.type.push(response1.data.types[i].type.name);
+            pokemondata.type.push(this.type_tag_lookup[response1.data.types[i].type.name]);
           }
           state.allPokemonData.push(pokemondata);
           this.setState({
@@ -287,16 +288,11 @@ class TypePage extends React.Component {
   }
 
   render() {
-    const tagImages = this.state.pTypeImgStorage.map((tag, index) => {
-      return <img id="typeSizing" key={index} src={tag} />;
-    });
-    console.log(this.state.allPokemonData);
     return (
       <div>
         <form
           onSubmit={(event) => {
             this.DeterminePokemon(event);
-            //this.SearchPokemon(event);
           }}
         >
           <Grid item align="center" xs={12}>
@@ -317,11 +313,9 @@ class TypePage extends React.Component {
               )}
               onInputChange={(event, value) => {
                 if (event.type === "change") {
-                  // user has typed in
                   this.updateForm("pokemonInfo", event.target.value);
                 }
                 if (event.type === "click") {
-                  // user has clicked
                   this.updateForm("pokemonInfo", value);
                 }
               }}
@@ -332,18 +326,6 @@ class TypePage extends React.Component {
               Search
             </Button>
           </Grid>
-          {/* {this.state.allPokemonData.map((pokemondata,index) =>(
-              <li> <Grid container spacing={3}>
-              <Grid item xs={1}></Grid>
-              <Grid item xs={5} align="center">
-                <img
-                  id="img"
-                  src={`https://pokeres.bastionbot.org/images/pokemon/${pokemondata.id}.png`}
-                />
-              </Grid>
-              </Grid>
-              </li>
-            ))} */}
           {this.state.allPokemonData.map((pokemondata, index) => (
               <Grid container spacing={3}>
                 <Grid item xs={1}></Grid>
@@ -363,7 +345,9 @@ class TypePage extends React.Component {
                     <li>{ability}</li>
                   ))}
                   <h3>{this.state.labels.type}</h3>
-                  {tagImages}
+                  {pokemondata.type.map((tag, index) => (
+                    <img id="typeSizing" key={index} src={tag} />
+                  ))}
                   <h3>{this.state.labels.description}</h3>
                   <p>{pokemondata.flavorText}</p>
                 </Grid>
