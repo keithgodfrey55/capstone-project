@@ -122,6 +122,8 @@ class TypePage extends React.Component {
       typeArray: [],
       allPokemonData: [],
     };
+    this.SearchPokemon = this.SearchPokemon.bind(this);
+    this.DeterminePokemon = this.DeterminePokemon.bind(this);
     this.randomNumber();
   }
   randomNumber() {
@@ -187,7 +189,13 @@ class TypePage extends React.Component {
         })
       );
     }
-
+    // state.pTypeImg = [];
+        
+    // for(let x = 0; x < state.pokemondata.type.length; x++){    
+    //       if(this.type_tag_lookup[state.pokemondata.type[x]]){
+    //         state.pTypeImg.push(this.type_tag_lookup[state.pokemondata.type[x]]);
+    //       }
+    //     }
     this.setState({
       labels: {
         name: "NAME",
