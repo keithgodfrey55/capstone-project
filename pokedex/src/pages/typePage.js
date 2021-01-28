@@ -122,8 +122,6 @@ class TypePage extends React.Component {
       typeArray: [],
       allPokemonData: [],
     };
-    this.SearchPokemon = this.SearchPokemon.bind(this);
-    this.DeterminePokemon = this.DeterminePokemon.bind(this);
     this.randomNumber();
   }
   randomNumber() {
@@ -159,6 +157,7 @@ class TypePage extends React.Component {
   SearchPokemon(event) {
     event.preventDefault();
     let state = this.state;
+    state.allPokemonData.splice(0, state.allPokemonData.length);
     for (let z = 0; z < this.state.typeArray.length; z++) {
       let first_call = axios.get(
         `https://pokeapi.co/api/v2/pokemon/${this.state.typeArray[z]}`
@@ -186,35 +185,29 @@ class TypePage extends React.Component {
             pokemondata.type.push(response1.data.types[i].type.name);
           }
           state.allPokemonData.push(pokemondata);
+          this.setState({
+            labels: {
+              name: "NAME",
+              id: "ID",
+              ability: "ABILITIES",
+              type: "TYPE",
+              description: "DESCRIPTION",
+            },
+            allPokemonData: state.allPokemonData,
+            pTypeImgStorage: state.pTypeImg,
+          });
         })
       );
     }
-    // state.pTypeImg = [];
-        
-    // for(let x = 0; x < state.pokemondata.type.length; x++){    
-    //       if(this.type_tag_lookup[state.pokemondata.type[x]]){
-    //         state.pTypeImg.push(this.type_tag_lookup[state.pokemondata.type[x]]);
-    //       }
-    //     }
-    this.setState({
-      labels: {
-        name: "NAME",
-        id: "ID",
-        ability: "ABILITIES",
-        type: "TYPE",
-        description: "DESCRIPTION",
-      },
-      allPokemonData: state.allPokemonData,
-      pTypeImgStorage: state.pTypeImg,
-    });
+    
   }
   DeterminePokemon(event) {
     event.preventDefault();
     let state = this.state;
-
     axios
       .get(`https://pokeapi.co/api/v2/type/${this.state.pokemonInfo.type}/`)
       .then((res) => {
+        state.typeArray.splice(0, state.typeArray.length);
         for (let i = 0; i < res.data.pokemon.length; i++) {
           //Bug
           if (res.data.pokemon[i].pokemon.name === "ledyba") {
@@ -287,9 +280,10 @@ class TypePage extends React.Component {
             state.typeArray.push(res.data.pokemon[i].pokemon.name);
           }
         }
-        this.setState(state);
-        
+      this.setState(state);
+      this.SearchPokemon(event);
       });
+      
   }
 
   render() {
@@ -302,7 +296,7 @@ class TypePage extends React.Component {
         <form
           onSubmit={(event) => {
             this.DeterminePokemon(event);
-            this.SearchPokemon(event);
+            //this.SearchPokemon(event);
           }}
         >
           <Grid item align="center" xs={12}>
