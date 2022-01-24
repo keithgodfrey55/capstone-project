@@ -30,7 +30,7 @@ class App extends React.Component {
         </Grid>
         <Grid item xs={12} align="center"><img
                 id="imgHome"
-                src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.x}.png`} alt="pokemon"
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${this.state.x}.png`} alt="pokemon"
               /></Grid>
       </Grid>
     </div>

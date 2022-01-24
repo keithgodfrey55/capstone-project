@@ -332,7 +332,7 @@ class TypePage extends React.Component {
                 <Grid item xs={5} align="center">
                   <img
                     id="img"
-                    src={`https://pokeres.bastionbot.org/images/pokemon/${pokemondata.id}.png`}
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemondata.id}.png`}
                   />
                 </Grid>
                 <Grid item xs={6} align="center">

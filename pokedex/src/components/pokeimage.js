@@ -14,4 +14,4 @@ function GetPokeImg(event) {
         return this.pokeID;
       });
   }
-export default GetPokemonNames;
+export default GetPokeImg;

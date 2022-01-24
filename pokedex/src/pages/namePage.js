@@ -251,7 +251,7 @@ class PokemonPage extends React.Component {
             <Grid item xs={5} align="center">
               <img
                 id="img"
-                src={`https://pokeres.bastionbot.org/images/pokemon/${this.state.pId}.png`} alt="pokemon"
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${this.state.pId}.png`} alt="pokemon"
               />
             </Grid>
 
